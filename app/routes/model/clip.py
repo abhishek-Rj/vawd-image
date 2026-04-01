@@ -9,12 +9,20 @@ model = CLIPModel.from_pretrained(model_id)
 processor = CLIPProcessor.from_pretrained(model_id)
 
 def get_image_embedding(image: Image.Image):
-    inputs = processor(images=image, return_tensors="pt")
+    inputs = processor(images=[image], return_tensors="pt")
 
     with torch.no_grad():
-        features = model.get_image_features(**inputs)
+        out = model.get_image_features(**inputs)
+
+    if hasattr(out, "pooler_output") and not isinstance(out, torch.Tensor):
+        features = out.pooler_output
+    elif hasattr(out, "image_embeds") and not isinstance(out, torch.Tensor):
+        features = out.image_embeds
+    else:
+        features = out
+
+    embedding = features[0].cpu().detach().numpy().flatten()
     
-    embedding = features[0].numpy()
     embedding = embedding / np.linalg.norm(embedding)
 
     return embedding.tolist()
