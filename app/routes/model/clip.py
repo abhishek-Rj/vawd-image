@@ -1,6 +1,7 @@
 from transformers import CLIPProcessor, CLIPModel
 from PIL import Image
 import torch
+import torch.nn.functional as F
 import numpy as np
 
 model_id = "openai/clip-vit-base-patch32"
@@ -13,16 +14,24 @@ def get_image_embedding(image: Image.Image):
 
     with torch.no_grad():
         out = model.get_image_features(**inputs)
-
-    if hasattr(out, "pooler_output") and not isinstance(out, torch.Tensor):
-        features = out.pooler_output
-    elif hasattr(out, "image_embeds") and not isinstance(out, torch.Tensor):
-        features = out.image_embeds
-    else:
-        features = out
+    
+    features = out.pooler_output
 
     embedding = features[0].cpu().detach().numpy().flatten()
     
     embedding = embedding / np.linalg.norm(embedding)
 
+    return embedding.tolist()
+
+
+def get_text_embedding(text: str):
+    inputs = processor(text=[text], return_tensors="pt")
+
+    with torch.no_grad():
+        out = model.get_text_features(**inputs)
+
+    features = out.pooler_output
+    embedding = F.normalize(features, p=2, dim=1)
+    embedding = embedding[0].cpu().detach().numpy().flatten()
+    
     return embedding.tolist()
