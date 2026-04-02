@@ -1,11 +1,11 @@
 from fastapi import FastAPI, UploadFile, File
-from app.lib.config import settings
 from app.routes.model.index import modelRouter
+from app.routes.client.index import userRouter
 
 app = FastAPI(title="vawd-image", version="0.0.1")
 
-
 app.include_router(modelRouter, prefix="/model")
+app.include_router(userRouter, prefix="/user")
 
 @app.get("/")
 def read_root():
