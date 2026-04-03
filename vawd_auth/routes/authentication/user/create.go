@@ -6,6 +6,7 @@ import (
 
 	"github.com/abhishek-Rj/vawd-image/config"
 	"github.com/abhishek-Rj/vawd-image/database"
+	"github.com/abhishek-Rj/vawd-image/tokens"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
@@ -31,7 +32,7 @@ func CreateUser(c* gin.Context) {
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 7*time.Second)
 	defer cancel()
 	
-	var response map[string]interface{}
+	var response map[string]string
 	
 	hashPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), config.App.BcryptCost)
 	if err != nil {
@@ -68,7 +69,7 @@ func CreateUser(c* gin.Context) {
 			return err
 		}
 		
-		response = map[string]interface{}{"userId": profile.UserID ,"firstName": profile.FirstName, "lastName": profile.LastName, "email": profile.Email, "userName": profile.UserName}
+		response = map[string]string{"userId": profile.UserID.String(), "email": profile.Email, "username": profile.UserName}
 		return nil
 	})
 
@@ -79,7 +80,24 @@ func CreateUser(c* gin.Context) {
 		})
 	}
 
+	accessToken, err := tokens.TokenMethods.GenerateAccessToken(response["userId"], response["email"], response["username"])
+	if err != nil {
+		c.JSON(400, gin.H{
+			"error": "at",
+		})
+	}
+
+	refreshToken, err := tokens.TokenMethods.GenerateRefreshToken(response["userId"], response["email"], response["username"])
+	if err != nil {
+		c.JSON(400, gin.H{
+			"error": "at",
+		})
+	}
+
+	c.SetCookie("refreshToken", refreshToken, 60*60*24*7, "/refresh", "localhost", false, true)
+
 	c.JSON(201, gin.H{
+		"accessToken": accessToken,
 		"user": response,
 	})
 }
