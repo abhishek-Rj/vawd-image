@@ -17,7 +17,7 @@ type details struct {
 	Email		string 	`json:"email" binding:"required,email"`
 	Password	string	`json:"password" binding:"required,min=6"`
 }
-
+//Transaction missing[to revert back to state in case of orphane user]
 func CreateUser(c* gin.Context) {
 	var req details
 
