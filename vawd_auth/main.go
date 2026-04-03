@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/abhishek-Rj/vawd-image/config"
 	"github.com/abhishek-Rj/vawd-image/database"
+	"github.com/abhishek-Rj/vawd-image/routes/authentication"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -24,6 +25,9 @@ func main() {
 			"msg": "whatever works, works!!",
 		})
 	})
+
+	auth := server.Group("/auth")
+	authentication.AuthRoutes(auth)
 
 	server.Run(":"+ config.App.AppPort)
 }

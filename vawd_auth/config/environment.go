@@ -14,6 +14,7 @@ type Config struct {
 	DBPassword	string	`envconfig:"DB_PASSWORD" required:"true"`
 	DBUser		string 	`envconfig:"DB_USER" required:"true"`
 	DBHost		string	`envconfig:"DB_HOST" required:"true"`
+	BcryptCost 	int		`envconfig:"BCRYPT_COST" required:"true"`
 }
 
 var App Config

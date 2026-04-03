@@ -16,23 +16,26 @@ type GormModel struct {
 
 type User struct {
 	GormModel
-	Profile		Profile 		`json:"profile" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Profile		*Profile 		`json:"profile" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;foreignKey:UserID"`
 	Images		[]Image			`json:"images"`
 }
 
 type Profile struct {
 	GormModel
 	UserID		uuid.UUID		`json:"userId" gorm:"uniqueIndex; not null"`	
+	User		*User			`json:"-" gorm:"foreignKey:UserID"`
 	Email 		string 			`json:"email" gorm:"not null;uniqueIndex"`
 	FirstName	string			`json:"firstName" gorm:"not null"`
 	LastName	string			`json:"lastName"`	
 	UserName	string			`json:"userName" gorm:"uniqueIndex;not null"`
 	ProfilePic 	string			`json:"profilePic"`
+	Password	string			`json:"-" gorm:"not null"`
 }
 
 type Image struct {
 	GormModel
 	UserID		uuid.UUID		`json:"userId" gorm:"not null"`
+	User		*User			`json:"-" gorm:"foreignKey:UserID"`
 	Name		string			`json:"name"`
 	Url			string			`json:"url" gorm:"uniqueIndex"`
 }
