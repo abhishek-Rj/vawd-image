@@ -59,7 +59,6 @@ func CreateUser(c* gin.Context) {
 			Password: req.Password,
 		}
 		
-		
 		profile.Password = string(hashPassword)
 		
 		if err = tx.Create(&profile).Error; err != nil {
