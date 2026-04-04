@@ -17,7 +17,7 @@ type GormModel struct {
 type User struct {
 	GormModel
 	Profile		*Profile 		`json:"profile" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;foreignKey:UserID"`
-	Images		[]Image			`json:"images"`
+	Images		[]Image			`json:"images" gorm:"constraint:OnDelete:CASCADE;foreignKey:UserID"`
 }
 
 type Profile struct {
