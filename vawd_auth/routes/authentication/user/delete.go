@@ -20,6 +20,7 @@ func DeleteUser(c *gin.Context) {
 		c.JSON(400, gin.H{
 			"error": "Coudn't delete the user",
 		})
+		return
 	}
 
 	c.JSON(200, gin.H{

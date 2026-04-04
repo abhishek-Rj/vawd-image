@@ -9,6 +9,12 @@ import (
 func AuthRoutes(auth *gin.RouterGroup) {
 	auth.POST("/create", user.CreateUser)	
 	auth.POST("/login", user.LoginUser)
-	auth.Use(middleware.VerifyToken)
-	auth.GET("/user", user.GetUser)
+
+	protected := auth.Group("/")
+	protected.Use(middleware.VerifyToken)
+
+	protected.GET("/user", user.GetUser)
+	protected.GET("/images", user.GetUserImage)
+	protected.PUT("/update", user.UpdateUser)
+	protected.DELETE("/delete", user.DeleteUser)
 }

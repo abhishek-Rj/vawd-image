@@ -24,6 +24,7 @@ func GetUserImage(c *gin.Context) {
 		c.JSON(400, gin.H{
 			"error": "Coudn't fetch images",
 		})
+		return
 	}
 
 	var response []imageDetails
