@@ -24,10 +24,10 @@ type Profile struct {
 	GormModel
 	UserID		uuid.UUID		`json:"userId" gorm:"uniqueIndex; not null"`	
 	User		*User			`json:"-" gorm:"foreignKey:UserID"`
-	Email 		string 			`json:"email" gorm:"not null;uniqueIndex"`
+	Email 		string 			`json:"email" gorm:"not null;uniqueIndex:idx_email_	active,where:deleted_at IS NULL"`
 	FirstName	string			`json:"firstName" gorm:"not null"`
 	LastName	string			`json:"lastName"`	
-	UserName	string			`json:"userName" gorm:"uniqueIndex;not null"`
+	UserName	string			`json:"userName" gorm:"uniqueIndex:idx_username_active,where:deleted_at IS NULL;not null"`
 	ProfilePic 	string			`json:"profilePic"`
 	Password	string			`json:"-" gorm:"not null"`
 }
