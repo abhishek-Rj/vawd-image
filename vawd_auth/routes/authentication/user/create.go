@@ -12,7 +12,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type details struct {
+type signupDetails struct {
 	FirstName	string 	`json:"firstname" binding:"required"`
 	LastName	string	`json:"lastname"`
 	UserName	string	`json:"username" binding:"required"`
@@ -21,7 +21,7 @@ type details struct {
 }
 
 func CreateUser(c* gin.Context) {
-	var req details
+	var req signupDetails
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(400, gin.H{
