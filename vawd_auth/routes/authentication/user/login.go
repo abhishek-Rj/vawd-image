@@ -93,7 +93,7 @@ func LoginUser(c *gin.Context) {
 	}
 	response := map[string]string{"userId": user.UserID.String(), "email": user.Email, "username":user.UserName}
 
-	c.SetCookie("refreshToken", (*jwtT).RefreshToken, 60*60*24*7, "/refresh", "localhost", false, true)
+	c.SetCookie("refreshToken", (*jwtT).RefreshToken, 60*60*24*7, "/auth/refresh", "localhost", false, true)
 
 	c.JSON(200, gin.H{
 		"accessToken": (*jwtT).AccessToken,

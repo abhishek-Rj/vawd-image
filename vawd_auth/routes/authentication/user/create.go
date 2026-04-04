@@ -103,7 +103,7 @@ func CreateUser(c* gin.Context) {
 		})
 	}
 
-	c.SetCookie("refreshToken", refreshToken, 60*60*24*7, "/refresh", "localhost", false, true)
+	c.SetCookie("refreshToken", refreshToken, 60*60*24*7, "/auth/refresh", "localhost", false, true)
 
 	c.JSON(201, gin.H{
 		"accessToken": accessToken,
