@@ -31,6 +31,15 @@ func CreateUser(c* gin.Context) {
 	}
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 7*time.Second)
 	defer cancel()
+
+	user, err := gorm.G[database.Profile](database.DB).Where("user_name = ? OR email = ?", req.UserName, req.Email).First(ctx);
+
+	if err != nil {
+		c.JSON(401, gin.H{
+			"error": "User with " + user.Email + " already exits",
+		})
+		return
+	}
 	
 	var response map[string]string
 	
