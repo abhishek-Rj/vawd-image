@@ -14,7 +14,7 @@ func DeleteUser(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 7*time.Second)
 	defer cancel()
 	
-	_, err := gorm.G[database.User](database.DB).Where("user_id = ?", userId).First(ctx)
+	_, err := gorm.G[database.User](database.DB).Where("user_id = ?", userId).Delete(ctx)
 
 	if err != nil {
 		c.JSON(400, gin.H{

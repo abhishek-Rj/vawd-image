@@ -12,4 +12,5 @@ func ImageRoutes(post *gin.RouterGroup) {
 	proctected.Use(middleware.VerifyToken)
 
 	post.POST("/upload", images.ImageUpload)
+	post.DELETE("/delete", images.DeleteImages)
 }

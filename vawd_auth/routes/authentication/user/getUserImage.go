@@ -27,14 +27,7 @@ func GetUserImage(c *gin.Context) {
 		return
 	}
 
-	var response []imageDetails
-	for _, img := range images {
-		response = append(response, imageDetails{
-			Name: img.Name,
-			Url: img.Url,
-		})
-	}
 	c.JSON(200, gin.H{
-		"images": response,
+		"images": images,
 	})
 }
