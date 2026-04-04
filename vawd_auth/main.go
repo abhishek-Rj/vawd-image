@@ -4,6 +4,7 @@ import (
 	"github.com/abhishek-Rj/vawd-image/config"
 	"github.com/abhishek-Rj/vawd-image/database"
 	"github.com/abhishek-Rj/vawd-image/routes/authentication"
+	images "github.com/abhishek-Rj/vawd-image/routes/posts"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -28,6 +29,9 @@ func main() {
 
 	auth := server.Group("/auth")
 	authentication.AuthRoutes(auth)
+
+	post := server.Group("/posts")
+	images.ImageRoutes(post)
 
 	server.Run(":"+ config.App.AppPort)
 }
