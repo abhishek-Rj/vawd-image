@@ -8,18 +8,18 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
+type TokenFunctions struct{}
 
-type TokenFunctions struct {}
-
-func (f *TokenFunctions) GenerateAccessToken(userId string, email string, username string) (string, error) {
+func (f *TokenFunctions) GenerateAccessToken(userId string, email string, username string, profilePic string) (string, error) {
 	claims := config.Claims{
-		UserID: userId,
-		Email: email,
-		Username: username,
+		UserID:     userId,
+		Email:      email,
+		Username:   username,
+		ProfilePic: profilePic,
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(7*time.Hour)),
-			IssuedAt: jwt.NewNumericDate(time.Now()),
-			Issuer: "vawd_image",
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(7 * time.Hour)),
+			IssuedAt:  jwt.NewNumericDate(time.Now()),
+			Issuer:    "vawd_image",
 		},
 	}
 	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -47,15 +47,16 @@ func (f *TokenFunctions) VerifyAccessToken(accessToken string) (*config.Claims, 
 	return claims, nil
 }
 
-func (f *TokenFunctions) GenerateRefreshToken(userId string, email string, username string) (string, error) {
+func (f *TokenFunctions) GenerateRefreshToken(userId string, email string, username string, profilePic string) (string, error) {
 	claims := config.Claims{
-		UserID: userId,
-		Email: email,
-		Username: username,
+		UserID:     userId,
+		Email:      email,
+		Username:   username,
+		ProfilePic: profilePic,
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(7*24*time.Hour)),
-			IssuedAt: jwt.NewNumericDate(time.Now()),
-			Issuer: "vawd_image",
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(7 * 24 * time.Hour)),
+			IssuedAt:  jwt.NewNumericDate(time.Now()),
+			Issuer:    "vawd_image",
 		},
 	}
 	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -67,7 +68,6 @@ func (f *TokenFunctions) GenerateRefreshToken(userId string, email string, usern
 
 	return signedToken, nil
 }
-
 
 func (f *TokenFunctions) VerifyRefereshToken(refreshToken string) (*config.Claims, error) {
 	claims := &config.Claims{}
@@ -85,4 +85,4 @@ func (f *TokenFunctions) VerifyRefereshToken(refreshToken string) (*config.Claim
 	return claims, nil
 }
 
-var TokenMethods TokenFunctions = TokenFunctions{};
+var TokenMethods TokenFunctions = TokenFunctions{}

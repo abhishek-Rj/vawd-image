@@ -13,14 +13,14 @@ import (
 )
 
 type signupDetails struct {
-	FirstName	string 	`json:"firstname" binding:"required"`
-	LastName	string	`json:"lastname"`
-	UserName	string	`json:"username" binding:"required"`
-	Email		string 	`json:"email" binding:"required,email"`
-	Password	string	`json:"password" binding:"required,min=6"`
+	FirstName string `json:"firstname" binding:"required"`
+	LastName  string `json:"lastname"`
+	UserName  string `json:"username" binding:"required"`
+	Email     string `json:"email" binding:"required,email"`
+	Password  string `json:"password" binding:"required,min=6"`
 }
 
-func CreateUser(c* gin.Context) {
+func CreateUser(c *gin.Context) {
 	var req signupDetails
 
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -32,7 +32,7 @@ func CreateUser(c* gin.Context) {
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 7*time.Second)
 	defer cancel()
 
-	user, err := gorm.G[database.Profile](database.DB).Where("user_name = ? OR email = ?", req.UserName, req.Email).First(ctx);
+	user, err := gorm.G[database.Profile](database.DB).Where("user_name = ? OR email = ?", req.UserName, req.Email).First(ctx)
 
 	if err != nil {
 		c.JSON(401, gin.H{
@@ -40,9 +40,9 @@ func CreateUser(c* gin.Context) {
 		})
 		return
 	}
-	
+
 	var response map[string]string
-	
+
 	hashPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), config.App.BcryptCost)
 	if err != nil {
 		c.JSON(400, gin.H{
@@ -61,42 +61,42 @@ func CreateUser(c* gin.Context) {
 		}
 
 		profile := database.Profile{
-			UserID: user.ID,
-			Email: req.Email,
+			UserID:    user.ID,
+			Email:     req.Email,
 			FirstName: req.FirstName,
-			LastName: req.LastName,
-			UserName: req.UserName,	
-			Password: req.Password,
+			LastName:  req.LastName,
+			UserName:  req.UserName,
+			Password:  req.Password,
 		}
-		
+
 		profile.Password = string(hashPassword)
-		
+
 		if err = tx.Create(&profile).Error; err != nil {
 			c.JSON(500, gin.H{
 				"error": "Failed to create Profile",
 			})
 			return err
 		}
-		
+
 		response = map[string]string{"userId": profile.UserID.String(), "email": profile.Email, "username": profile.UserName}
 		return nil
 	})
 
 	if txErr != nil {
 		c.JSON(400, gin.H{
-			"error": "Failed to create user",
+			"error":  "Failed to create user",
 			"detail": txErr,
 		})
 	}
 
-	accessToken, err := tokens.TokenMethods.GenerateAccessToken(response["userId"], response["email"], response["username"])
+	accessToken, err := tokens.TokenMethods.GenerateAccessToken(response["userId"], response["email"], response["username"], "")
 	if err != nil {
 		c.JSON(400, gin.H{
 			"error": "at",
 		})
 	}
 
-	refreshToken, err := tokens.TokenMethods.GenerateRefreshToken(response["userId"], response["email"], response["username"])
+	refreshToken, err := tokens.TokenMethods.GenerateRefreshToken(response["userId"], response["email"], response["username"], "")
 	if err != nil {
 		c.JSON(400, gin.H{
 			"error": "at",
@@ -105,8 +105,9 @@ func CreateUser(c* gin.Context) {
 
 	c.SetCookie("refreshToken", refreshToken, 60*60*24*7, "/auth/refresh", "localhost", false, true)
 
+	c.SetCookie("accessToken", accessToken, 7*60*60, "/", "localhost", false, true)
+
 	c.JSON(201, gin.H{
-		"accessToken": accessToken,
 		"user": response,
 	})
 }

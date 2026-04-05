@@ -11,6 +11,7 @@ export default function SignupForm() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
 
   const strengthLevel = (() => {
     if (password.length === 0) return 0;
@@ -24,17 +25,37 @@ export default function SignupForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    // TODO: Integrate with vawd auth service
-    await new Promise((r) => setTimeout(r, 1500));
-    setIsLoading(false);
+    const url = process.env.NEXT_PUBLIC_AUTH_SERVER_URL;
+    const firstname = name.split(" ")[0];
+    const lastname = name.split(" ")[1];
+    const creatUser = await fetch(`${url}/auth/create`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        firstname,
+        lastname,
+        username,
+        email,
+        password,
+      }),
+    });
+    if (!creatUser.ok) {
+      setError("Failed to create user");
+      setIsLoading(false);
+      return;
+    }
+    const data = await creatUser.json();
   };
 
   return (
     <form onSubmit={handleSubmit} className="w-full space-y-6">
       {/* Name */}
       <div>
-        <label htmlFor="signup-name" className="label-brutal flex items-center gap-2">
-          <span className="inline-block h-2 w-2 bg-accent rounded-sm" />
+        <label
+          htmlFor="signup-name"
+          className="label-brutal flex items-center gap-2"
+        >
+          <span className="inline-block h-2 w-2 bg-accent rounded-sm" />{" "}
           FULL_NAME
         </label>
         <input
@@ -50,8 +71,11 @@ export default function SignupForm() {
 
       {/* Username */}
       <div>
-        <label htmlFor="signup-username" className="label-brutal flex items-center gap-2">
-          <span className="inline-block h-2 w-2 bg-accent rounded-sm" />
+        <label
+          htmlFor="signup-username"
+          className="label-brutal flex items-center gap-2"
+        >
+          <span className="inline-block h-2 w-2 bg-accent rounded-sm" />{" "}
           USERNAME
         </label>
         <input
@@ -67,8 +91,11 @@ export default function SignupForm() {
 
       {/* Email */}
       <div>
-        <label htmlFor="signup-email" className="label-brutal flex items-center gap-2">
-          <span className="inline-block h-2 w-2 bg-accent rounded-sm" />
+        <label
+          htmlFor="signup-email"
+          className="label-brutal flex items-center gap-2"
+        >
+          <span className="inline-block h-2 w-2 bg-accent rounded-sm" />{" "}
           EMAIL_ADDRESS
         </label>
         <input
@@ -85,8 +112,11 @@ export default function SignupForm() {
       {/* Password */}
       <div>
         <div className="flex items-center justify-between mb-1.5">
-          <label htmlFor="signup-password" className="label-brutal mb-0 flex items-center gap-2">
-            <span className="inline-block h-2 w-2 bg-accent rounded-sm" />
+          <label
+            htmlFor="signup-password"
+            className="label-brutal mb-0 flex items-center gap-2"
+          >
+            <span className="inline-block h-2 w-2 bg-accent rounded-sm" />{" "}
             PASSWORD
           </label>
           <button
@@ -120,8 +150,8 @@ export default function SignupForm() {
                       ? level === 1
                         ? "active-weak"
                         : level === 2
-                        ? "active-fair"
-                        : "active-strong"
+                          ? "active-fair"
+                          : "active-strong"
                       : ""
                   }`}
                 />
@@ -161,10 +191,7 @@ export default function SignupForm() {
       </div>
 
       {/* OAuth */}
-      <button
-        type="button"
-        className="btn-brutal w-full"
-      >
+      <button type="button" className="btn-brutal w-full">
         <svg className="h-4 w-4" viewBox="0 0 24 24">
           <path
             fill="currentColor"

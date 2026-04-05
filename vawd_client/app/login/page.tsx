@@ -31,8 +31,8 @@ export default function LoginPage() {
           </h1>
           <div className="mt-6 grid-border-t pt-6">
             <p className="text-xs text-fg-dim uppercase tracking-[0.15em] max-w-xs leading-relaxed font-supply">
-              SIGN IN TO ACCESS YOUR VISUAL SEARCH PLATFORM.
-              UPLOAD IMAGES. SEARCH BY MEANING. DISCOVER VISUALLY.
+              SIGN IN TO ACCESS YOUR VISUAL SEARCH PLATFORM. UPLOAD IMAGES.
+              SEARCH BY MEANING. DISCOVER VISUALLY.
             </p>
           </div>
         </div>

@@ -12,14 +12,14 @@ import (
 )
 
 type loginDetails struct {
-	UserName	string	`json:"username"`
-	Email		string	`json:"email"`
-	Password	string `json:"password" binding:"required"`
+	UserName string `json:"username"`
+	Email    string `json:"email"`
+	Password string `json:"password" binding:"required"`
 }
 
 type jwtTokens struct {
-	AccessToken		string
-	RefreshToken	string
+	AccessToken  string
+	RefreshToken string
 }
 
 func LoginUser(c *gin.Context) {
@@ -28,7 +28,7 @@ func LoginUser(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 7*time.Second)
 	defer cancel()
 
-	if err:= c.ShouldBindJSON(&req); err != nil {
+	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(400, gin.H{
 			"error": err.Error(),
 		})
@@ -45,11 +45,11 @@ func LoginUser(c *gin.Context) {
 	var user database.Profile
 	if req.Email == "" {
 		var err error
-		user, err = gorm.G[database.Profile](database.DB).Where("user_name = ?", req.UserName).First(ctx)	
+		user, err = gorm.G[database.Profile](database.DB).Where("user_name = ?", req.UserName).First(ctx)
 		if err != nil {
 			c.JSON(400, gin.H{
-				"error" : "User with" +  " " + req.UserName +  " " + "usename cannot be found",
-			})	
+				"error": "User with" + " " + req.UserName + " " + "usename cannot be found",
+			})
 			return
 		}
 	} else {
@@ -57,8 +57,8 @@ func LoginUser(c *gin.Context) {
 		user, err = gorm.G[database.Profile](database.DB).Where("email = ?", req.Email).First(ctx)
 		if err != nil {
 			c.JSON(400, gin.H{
-				"error" : "User with" +  " " + req.UserName +  " " + "usename cannot be found",
-			})	
+				"error": "User with" + " " + req.UserName + " " + "usename cannot be found",
+			})
 			return
 		}
 	}
@@ -70,33 +70,34 @@ func LoginUser(c *gin.Context) {
 		})
 		return
 	}
-	
+
 	jwtT := &jwtTokens{}
 	err = func() error {
-		refreshToken, err := tokens.TokenMethods.GenerateRefreshToken(user.ID.String(), user.Email, user.UserName)
+		refreshToken, err := tokens.TokenMethods.GenerateRefreshToken(user.ID.String(), user.Email, user.UserName, user.ProfilePic)
 		if err != nil {
 			return err
 		}
-		accessToken, err := tokens.TokenMethods.GenerateAccessToken(user.ID.String(), user.Email, user.UserName)
+		accessToken, err := tokens.TokenMethods.GenerateAccessToken(user.ID.String(), user.Email, user.UserName, user.ProfilePic)
 		if err != nil {
 			return err
 		}
 		jwtT.RefreshToken = refreshToken
-		jwtT.AccessToken = accessToken	
+		jwtT.AccessToken = accessToken
 		return nil
 	}()
-	if err != nil{
+	if err != nil {
 		c.JSON(400, gin.H{
 			"error": "Error creating tokens",
 		})
 		return
 	}
-	response := map[string]string{"userId": user.UserID.String(), "email": user.Email, "username":user.UserName}
+	response := map[string]string{"userId": user.UserID.String(), "email": user.Email, "username": user.UserName}
 
 	c.SetCookie("refreshToken", (*jwtT).RefreshToken, 60*60*24*7, "/auth/refresh", "localhost", false, true)
 
+	c.SetCookie("accessToken", (*jwtT).AccessToken, 7*60*60, "/", "localhost", false, true)
+
 	c.JSON(200, gin.H{
-		"accessToken": (*jwtT).AccessToken,
-		"user": response, 
+		"user": response,
 	})
 }

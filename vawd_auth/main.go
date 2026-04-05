@@ -15,13 +15,13 @@ func main() {
 	server := gin.Default()
 
 	server.Use(cors.New(cors.Config{
-		AllowOrigins: []string{"http://localhost:3000"},
-		AllowMethods: []string{"GET", "PUT", "POST", "DELETE"},
-		AllowHeaders: []string{"Origin", "Content-type", "Authorization"},	
+		AllowOrigins:     []string{"http://localhost:3000"},
+		AllowMethods:     []string{"GET", "PUT", "POST", "DELETE"},
+		AllowHeaders:     []string{"Origin", "Content-type", "Authorization"},
 		AllowCredentials: true,
 	}))
 
-	server.GET("/", func (c* gin.Context){ 
+	server.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"msg": "whatever works, works!!",
 		})
@@ -33,5 +33,5 @@ func main() {
 	post := server.Group("/posts")
 	images.ImageRoutes(post)
 
-	server.Run(":"+ config.App.AppPort)
+	server.Run(":" + config.App.AppPort)
 }

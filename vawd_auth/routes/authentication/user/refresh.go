@@ -18,10 +18,10 @@ func Refresh(c *gin.Context) {
 		c.JSON(400, gin.H{
 			"error": "cannot verify refresh token",
 		})
-		return 
+		return
 	}
 
-	accessToken, err := tokens.TokenMethods.GenerateAccessToken(userDetails.UserID, userDetails.Email, userDetails.Username)
+	accessToken, err := tokens.TokenMethods.GenerateAccessToken(userDetails.UserID, userDetails.Email, userDetails.Username, userDetails.ProfilePic)
 	if err != nil {
 		c.JSON(400, gin.H{
 			"error": "cannot generate access token",
@@ -29,8 +29,9 @@ func Refresh(c *gin.Context) {
 		return
 	}
 
+	c.SetCookie("accessToken", accessToken, 7*60*60, "/", "localhost", false, true)
+
 	c.JSON(200, gin.H{
-		"accessToken": accessToken,
-		"user":userDetails,
+		"user": userDetails,
 	})
 }
