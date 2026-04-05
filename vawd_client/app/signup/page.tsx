@@ -5,7 +5,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "SIGN_UP — VAWD_IMAGE",
   description:
-    "Create your VAWD Image account to start searching images with AI-powered visual understanding.",
+    "Create your VAWD_IMAGE account to start searching images with AI-powered visual understanding.",
 };
 
 export default function SignupPage() {
@@ -27,7 +27,7 @@ export default function SignupPage() {
           <h1 className="text-6xl xl:text-7xl font-bold tracking-tight text-fg uppercase leading-[1.05]">
             CREATE
             <br />
-            _ACCOUNT
+            <span className="text-accent">_ACCOUNT</span>
           </h1>
           <div className="mt-6 grid-border-t pt-6">
             <p className="text-xs text-fg-dim uppercase tracking-[0.15em] max-w-xs leading-relaxed font-supply">
@@ -64,7 +64,7 @@ export default function SignupPage() {
           {/* Header */}
           <div className="space-y-2">
             <h2 className="text-2xl font-bold tracking-tight text-fg uppercase lg:hidden">
-              CREATE_ACCOUNT
+              CREATE<span className="text-accent">_ACCOUNT</span>
             </h2>
             <p className="text-[10px] uppercase tracking-[0.15em] text-fg-dim lg:text-xs font-supply">
               FILL IN YOUR DETAILS TO GET STARTED

@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Navbar from "@/app/components/Navbar";
 import HeroAsciiArt from "./components/HeroAsciiArt";
+import { FaArrowRight } from "react-icons/fa";
 
 export const metadata: Metadata = {
     title: "VAWD_IMAGE — AI-Powered Visual Search",
     description:
-        "Search images by what they look like, not just what they're tagged with. VAWD Image uses CLIP embeddings and vector search to understand visual content.",
+        "Search images by what they look like, not just what they're tagged with. VAWD_IMAGE uses CLIP embeddings and vector search to understand visual content.",
 };
 
 export default function Home() {
@@ -49,9 +50,9 @@ export default function Home() {
                             <Link
                                 href="/signup"
                                 id="hero-cta-signup"
-                                className="btn-brutal-fill"
+                                className="btn-brutal-fill flex items-center justify-center gap-2"
                             >
-                                GET_STARTED →
+                                GET_STARTED <FaArrowRight />
                             </Link>
                             <Link
                                 href="#features"
@@ -291,9 +292,9 @@ export default function Home() {
                         <Link
                             href="/signup"
                             id="cta-signup"
-                            className="btn-brutal-fill"
+                            className="btn-brutal-fill flex items-center justify-center gap-2"
                         >
-                            START_FOR_FREE →
+                            START_FOR_FREE <FaArrowRight />
                         </Link>
                     </div>
                 </div>

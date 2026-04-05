@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { FaArrowRight } from "react-icons/fa";
 
 export default function SignupForm() {
   const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +33,8 @@ export default function SignupForm() {
     <form onSubmit={handleSubmit} className="w-full space-y-6">
       {/* Name */}
       <div>
-        <label htmlFor="signup-name" className="label-brutal">
+        <label htmlFor="signup-name" className="label-brutal flex items-center gap-2">
+          <span className="inline-block h-2 w-2 bg-accent rounded-sm" />
           FULL_NAME
         </label>
         <input
@@ -45,9 +48,27 @@ export default function SignupForm() {
         />
       </div>
 
+      {/* Username */}
+      <div>
+        <label htmlFor="signup-username" className="label-brutal flex items-center gap-2">
+          <span className="inline-block h-2 w-2 bg-accent rounded-sm" />
+          USERNAME
+        </label>
+        <input
+          id="signup-username"
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="username"
+          required
+          className="input-brutal"
+        />
+      </div>
+
       {/* Email */}
       <div>
-        <label htmlFor="signup-email" className="label-brutal">
+        <label htmlFor="signup-email" className="label-brutal flex items-center gap-2">
+          <span className="inline-block h-2 w-2 bg-accent rounded-sm" />
           EMAIL_ADDRESS
         </label>
         <input
@@ -64,7 +85,8 @@ export default function SignupForm() {
       {/* Password */}
       <div>
         <div className="flex items-center justify-between mb-1.5">
-          <label htmlFor="signup-password" className="label-brutal mb-0">
+          <label htmlFor="signup-password" className="label-brutal mb-0 flex items-center gap-2">
+            <span className="inline-block h-2 w-2 bg-accent rounded-sm" />
             PASSWORD
           </label>
           <button
@@ -125,7 +147,9 @@ export default function SignupForm() {
             CREATING_ACCOUNT...
           </span>
         ) : (
-          "CREATE_ACCOUNT →"
+          <span className="flex items-center justify-center gap-2">
+            CREATE_ACCOUNT <FaArrowRight />
+          </span>
         )}
       </button>
 

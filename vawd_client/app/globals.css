@@ -38,6 +38,7 @@
   --color-yellow: #ffcc00;
   --font-mono: "MonoSpec", "IBM Plex Mono", "Courier New", Courier, monospace;
   --font-supply: "PPSupplyMono", "Courier New", monospace;
+  --font-input: "Courier New", Courier, monospace;
 }
 
 /* ── Global Reset ── */
@@ -187,7 +188,7 @@ body {
   border: 1px solid var(--color-border);
   background: var(--color-bg);
   color: var(--color-fg);
-  font-family: var(--font-mono);
+  font-family: var(--font-input);
   font-size: 13px;
   transition: border-color 0.15s;
 }

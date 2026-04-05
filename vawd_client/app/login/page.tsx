@@ -5,7 +5,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "LOG_IN — VAWD_IMAGE",
   description:
-    "Log in to VAWD Image to search, discover, and explore images using AI-powered visual search.",
+    "Log in to VAWD_IMAGE to search, discover, and explore images using AI-powered visual search.",
 };
 
 export default function LoginPage() {
@@ -27,7 +27,7 @@ export default function LoginPage() {
           <h1 className="text-6xl xl:text-7xl font-bold tracking-tight text-fg uppercase leading-[1.05]">
             LOG
             <br />
-            _IN
+            <span className="text-accent">_IN</span>
           </h1>
           <div className="mt-6 grid-border-t pt-6">
             <p className="text-xs text-fg-dim uppercase tracking-[0.15em] max-w-xs leading-relaxed font-supply">
@@ -64,7 +64,7 @@ export default function LoginPage() {
           {/* Header */}
           <div className="space-y-2">
             <h2 className="text-2xl font-bold tracking-tight text-fg uppercase lg:hidden">
-              LOG_IN
+              LOG<span className="text-accent">_IN</span>
             </h2>
             <p className="text-[10px] uppercase tracking-[0.15em] text-fg-dim lg:text-xs font-supply">
               ENTER YOUR CREDENTIALS TO CONTINUE

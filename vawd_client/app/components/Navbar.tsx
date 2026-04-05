@@ -11,25 +11,25 @@ export default function Navbar() {
         <Link
           href="/"
           id="navbar-logo"
-          className="flex items-center gap-1 font-bold tracking-widest text-fg text-sm uppercase transition-opacity hover:opacity-70"
+          className="flex items-center gap-1 font-bold tracking-widest text-fg text-xs sm:text-sm uppercase transition-opacity hover:opacity-70"
         >
           <span className="text-accent">▌</span>
           VAWD<span className="text-fg-muted font-normal">_IMAGE</span>
         </Link>
 
         {/* Nav links */}
-        <div className="flex items-center gap-0">
+        <div className="flex items-center">
           <Link
             href="/login"
             id="navbar-login"
-            className="grid-border-l px-5 py-4 text-xs font-medium uppercase tracking-widest text-fg-muted transition-colors hover:text-fg hover:bg-surface"
+            className="grid-border-l px-3 sm:px-5 py-4 text-[10px] sm:text-xs font-medium uppercase tracking-widest text-fg-muted transition-colors hover:text-fg hover:bg-surface"
           >
             [LOG_IN]
           </Link>
           <Link
             href="/signup"
             id="navbar-signup"
-            className="grid-border-l px-5 py-4 text-xs font-bold uppercase tracking-widest text-fg bg-surface transition-colors hover:bg-fg hover:text-bg"
+            className="grid-border-l px-3 sm:px-5 py-4 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-fg bg-surface transition-colors hover:bg-fg hover:text-bg"
           >
             [SIGN_UP]
           </Link>
