@@ -1,118 +1,273 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+/* ═══════════════════════════════════════════════════════════════
+   VAWD IMAGE — Swiss Brutalism × Developer Aesthetic
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Custom Fonts ── */
+@font-face {
+  font-family: "MonoSpec";
+  src: url("/fonts/MonoSpec-Variable.ttf") format("truetype");
+  font-weight: 100 900;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "PPSupplyMono";
+  src: url("/fonts/PPSupplyMono-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-surface: var(--surface);
-  --color-surface-hover: var(--surface-hover);
-  --color-border: var(--border-color);
-  --color-muted: var(--muted);
-  --color-accent: var(--accent);
-  --color-accent-hover: var(--accent-hover);
-  --color-accent-muted: var(--accent-muted);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: #0a0a0a;
+  --color-fg: #ffffff;
+  --color-fg-muted: #888888;
+  --color-fg-dim: #555555;
+  --color-border: #333333;
+  --color-border-light: #444444;
+  --color-surface: #111111;
+  --color-surface-hover: #1a1a1a;
+  --color-accent: #ff4d00;
+  --color-accent-dim: rgba(255, 77, 0, 0.15);
+  --color-green: #00ff66;
+  --color-red: #ff3333;
+  --color-yellow: #ffcc00;
+  --font-mono: "MonoSpec", "IBM Plex Mono", "Courier New", Courier, monospace;
+  --font-supply: "PPSupplyMono", "Courier New", monospace;
 }
 
-/* ── Dark theme (default) ── */
-:root,
-[data-theme="dark"] {
-  --background: #000000;
-  --foreground: #ededed;
-  --surface: #0a0a0a;
-  --surface-hover: #111111;
-  --border-color: #222222;
-  --muted: #888888;
-  --accent: #3b82f6;
-  --accent-hover: #2563eb;
-  --accent-muted: rgba(59, 130, 246, 0.15);
-}
-
-/* ── Light theme ── */
-[data-theme="light"] {
-  --background: #ffffff;
-  --foreground: #0a0a0a;
-  --surface: #fafafa;
-  --surface-hover: #f5f5f5;
-  --border-color: #e5e5e5;
-  --muted: #737373;
-  --accent: #2563eb;
-  --accent-hover: #1d4ed8;
-  --accent-muted: rgba(37, 99, 235, 0.1);
-}
-
-/* ── Base resets ── */
-* {
+/* ── Global Reset ── */
+*,
+*::before,
+*::after {
   box-sizing: border-box;
+  border-radius: 0 !important;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* ── Selection ── */
-::selection {
-  background: var(--accent);
-  color: #ffffff;
-}
-
-/* ── Smooth scrolling ── */
 html {
   scroll-behavior: smooth;
 }
 
-/* ── Focus ring ── */
+body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Selection ── */
+::selection {
+  background: var(--color-accent);
+  color: #000000;
+}
+
+/* ── Focus ── */
 :focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  outline: 1px solid var(--color-accent);
+  outline-offset: 0px;
 }
 
-/* ── Animated gradient text ── */
-.gradient-text {
-  background: linear-gradient(135deg, var(--accent), #8b5cf6, var(--accent));
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: gradient-shift 4s ease infinite;
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
 }
 
-@keyframes gradient-shift {
-  0%,100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
 }
 
-/* ── Glow pulse ── */
-@keyframes glow-pulse {
-  0%,100% { box-shadow: 0 0 20px rgba(59,130,246,0.15); }
-  50% { box-shadow: 0 0 40px rgba(59,130,246,0.3); }
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
 }
 
-.glow {
-  animation: glow-pulse 3s ease-in-out infinite;
+/* ═══════════════════════════════════════════════════════════════
+   UTILITIES
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Small Caps Font ── */
+.font-supply {
+  font-family: var(--font-supply);
 }
 
-/* ── Fade-in ── */
-@keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(20px); }
+/* ── Grid Cell Borders ── */
+.grid-border {
+  border: 1px solid var(--color-border);
+}
+
+.grid-border-b {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.grid-border-r {
+  border-right: 1px solid var(--color-border);
+}
+
+.grid-border-t {
+  border-top: 1px solid var(--color-border);
+}
+
+.grid-border-l {
+  border-left: 1px solid var(--color-border);
+}
+
+/* ── Accent Badge ── */
+.badge-accent {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid var(--color-accent);
+  color: var(--color-accent);
+  font-size: 11px;
+  font-family: var(--font-supply);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  line-height: 1;
+}
+
+/* ── Brutalist Button ── */
+.btn-brutal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border: 1px solid var(--color-fg);
+  background: transparent;
+  color: var(--color-fg);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.btn-brutal:hover {
+  background: var(--color-fg);
+  color: var(--color-bg);
+}
+
+.btn-brutal-fill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border: 1px solid var(--color-fg);
+  background: var(--color-fg);
+  color: var(--color-bg);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.btn-brutal-fill:hover {
+  background: transparent;
+  color: var(--color-fg);
+}
+
+/* ── Brutalist Input ── */
+.input-brutal {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  transition: border-color 0.15s;
+}
+
+.input-brutal::placeholder {
+  color: var(--color-fg-dim);
+}
+
+.input-brutal:focus {
+  border-color: var(--color-fg);
+  outline: none;
+}
+
+.input-brutal:hover {
+  border-color: var(--color-border-light);
+}
+
+/* ── Label ── */
+.label-brutal {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-fg-muted);
+  margin-bottom: 6px;
+  font-family: var(--font-supply);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Fade In ── */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-.animate-fade-in-up {
-  animation: fade-in-up 0.6s ease-out forwards;
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out forwards;
 }
 
-.animate-delay-100 { animation-delay: 0.1s; }
-.animate-delay-200 { animation-delay: 0.2s; }
-.animate-delay-300 { animation-delay: 0.3s; }
-.animate-delay-400 { animation-delay: 0.4s; }
-.animate-delay-500 { animation-delay: 0.5s; }
+.animate-delay-1 { animation-delay: 0.1s; opacity: 0; }
+.animate-delay-2 { animation-delay: 0.2s; opacity: 0; }
+.animate-delay-3 { animation-delay: 0.3s; opacity: 0; }
+.animate-delay-4 { animation-delay: 0.4s; opacity: 0; }
+.animate-delay-5 { animation-delay: 0.5s; opacity: 0; }
 
-/* ── Dot grid background ── */
-.dot-grid {
-  background-image: radial-gradient(circle, var(--border-color) 1px, transparent 1px);
-  background-size: 24px 24px;
+/* ── Grid pattern background ── */
+.grid-pattern {
+  background-image:
+    linear-gradient(var(--color-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+  background-size: 60px 60px;
 }
+
+/* ── Divider line ── */
+.divider-brutal {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.divider-brutal::before,
+.divider-brutal::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+}
+
+/* ── Strength blocks ── */
+.strength-block {
+  height: 4px;
+  flex: 1;
+  background: var(--color-border);
+  transition: background 0.2s;
+}
+
+.strength-block.active-weak { background: var(--color-red); }
+.strength-block.active-fair { background: var(--color-yellow); }
+.strength-block.active-strong { background: var(--color-green); }

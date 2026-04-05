@@ -10,14 +10,14 @@ export default function SignupForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const passwordStrength = (() => {
-    if (password.length === 0) return { label: "", width: "0%", color: "" };
-    if (password.length < 6)
-      return { label: "Weak", width: "33%", color: "bg-red-500" };
-    if (password.length < 10)
-      return { label: "Fair", width: "66%", color: "bg-yellow-500" };
-    return { label: "Strong", width: "100%", color: "bg-green-500" };
+  const strengthLevel = (() => {
+    if (password.length === 0) return 0;
+    if (password.length < 6) return 1;
+    if (password.length < 10) return 2;
+    return 3;
   })();
+
+  const strengthLabel = ["", "WEAK", "FAIR", "STRONG"][strengthLevel];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,33 +28,27 @@ export default function SignupForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full space-y-5">
+    <form onSubmit={handleSubmit} className="w-full space-y-6">
       {/* Name */}
-      <div className="space-y-2">
-        <label
-          htmlFor="signup-name"
-          className="block text-sm font-medium text-foreground"
-        >
-          Name
+      <div>
+        <label htmlFor="signup-name" className="label-brutal">
+          FULL_NAME
         </label>
         <input
           id="signup-name"
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="Your name"
+          placeholder="your name"
           required
-          className="w-full rounded-lg border border-border bg-surface px-4 py-2.5 text-sm text-foreground placeholder:text-muted transition-all duration-200 focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none hover:border-muted"
+          className="input-brutal"
         />
       </div>
 
       {/* Email */}
-      <div className="space-y-2">
-        <label
-          htmlFor="signup-email"
-          className="block text-sm font-medium text-foreground"
-        >
-          Email
+      <div>
+        <label htmlFor="signup-email" className="label-brutal">
+          EMAIL_ADDRESS
         </label>
         <input
           id="signup-email"
@@ -63,25 +57,22 @@ export default function SignupForm() {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@example.com"
           required
-          className="w-full rounded-lg border border-border bg-surface px-4 py-2.5 text-sm text-foreground placeholder:text-muted transition-all duration-200 focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none hover:border-muted"
+          className="input-brutal"
         />
       </div>
 
       {/* Password */}
-      <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <label
-            htmlFor="signup-password"
-            className="block text-sm font-medium text-foreground"
-          >
-            Password
+      <div>
+        <div className="flex items-center justify-between mb-1.5">
+          <label htmlFor="signup-password" className="label-brutal mb-0">
+            PASSWORD
           </label>
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="text-xs text-muted hover:text-foreground transition-colors"
+            className="text-[10px] uppercase tracking-widest text-fg-dim hover:text-fg transition-colors font-mono"
           >
-            {showPassword ? "Hide" : "Show"}
+            [{showPassword ? "HIDE" : "SHOW"}]
           </button>
         </div>
         <input
@@ -89,22 +80,34 @@ export default function SignupForm() {
           type={showPassword ? "text" : "password"}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="Min. 6 characters"
+          placeholder="min. 6 characters"
           required
           minLength={6}
-          className="w-full rounded-lg border border-border bg-surface px-4 py-2.5 text-sm text-foreground placeholder:text-muted transition-all duration-200 focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none hover:border-muted"
+          className="input-brutal"
         />
 
-        {/* Password strength meter */}
+        {/* Password strength — block meter */}
         {password.length > 0 && (
-          <div className="space-y-1">
-            <div className="h-1 w-full rounded-full bg-border overflow-hidden">
-              <div
-                className={`h-full rounded-full transition-all duration-300 ${passwordStrength.color}`}
-                style={{ width: passwordStrength.width }}
-              />
+          <div className="mt-3 space-y-1">
+            <div className="flex gap-1">
+              {[1, 2, 3].map((level) => (
+                <div
+                  key={level}
+                  className={`strength-block ${
+                    level <= strengthLevel
+                      ? level === 1
+                        ? "active-weak"
+                        : level === 2
+                        ? "active-fair"
+                        : "active-strong"
+                      : ""
+                  }`}
+                />
+              ))}
             </div>
-            <p className="text-xs text-muted">{passwordStrength.label}</p>
+            <p className="text-[10px] uppercase tracking-widest text-fg-dim font-mono">
+              {strengthLabel}
+            </p>
           </div>
         )}
       </div>
@@ -114,47 +117,29 @@ export default function SignupForm() {
         id="signup-submit"
         type="submit"
         disabled={isLoading}
-        className="relative w-full rounded-lg bg-foreground py-2.5 text-sm font-medium text-background transition-all duration-200 hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="btn-brutal-fill w-full disabled:opacity-40 disabled:cursor-not-allowed"
       >
         {isLoading ? (
           <span className="flex items-center justify-center gap-2">
-            <svg
-              className="h-4 w-4 animate-spin"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              />
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-              />
-            </svg>
-            Creating account…
+            <span className="inline-block h-3 w-3 border-2 border-bg border-t-transparent animate-spin" />
+            CREATING_ACCOUNT...
           </span>
         ) : (
-          "Create account"
+          "CREATE_ACCOUNT →"
         )}
       </button>
 
       {/* Divider */}
-      <div className="relative flex items-center py-2">
-        <div className="flex-1 border-t border-border" />
-        <span className="px-4 text-xs text-muted">or</span>
-        <div className="flex-1 border-t border-border" />
+      <div className="divider-brutal">
+        <span className="text-[10px] uppercase tracking-widest text-fg-dim font-mono">
+          OR
+        </span>
       </div>
 
-      {/* OAuth placeholder */}
+      {/* OAuth */}
       <button
         type="button"
-        className="flex w-full items-center justify-center gap-3 rounded-lg border border-border py-2.5 text-sm text-foreground transition-all duration-200 hover:bg-surface-hover hover:border-muted"
+        className="btn-brutal w-full"
       >
         <svg className="h-4 w-4" viewBox="0 0 24 24">
           <path
@@ -174,29 +159,29 @@ export default function SignupForm() {
             d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
           />
         </svg>
-        Continue with Google
+        CONTINUE WITH GOOGLE
       </button>
 
       {/* Terms */}
-      <p className="text-center text-xs text-muted leading-relaxed">
-        By creating an account, you agree to our{" "}
-        <span className="text-foreground hover:underline underline-offset-4 cursor-pointer">
-          Terms of Service
+      <p className="text-center text-[10px] text-fg-dim tracking-wide leading-relaxed font-mono uppercase">
+        BY CREATING AN ACCOUNT, YOU AGREE TO OUR{" "}
+        <span className="text-fg-muted hover:text-fg cursor-pointer underline underline-offset-4 transition-colors">
+          TERMS
         </span>{" "}
-        and{" "}
-        <span className="text-foreground hover:underline underline-offset-4 cursor-pointer">
-          Privacy Policy
+        AND{" "}
+        <span className="text-fg-muted hover:text-fg cursor-pointer underline underline-offset-4 transition-colors">
+          PRIVACY_POLICY
         </span>
       </p>
 
       {/* Footer */}
-      <p className="text-center text-sm text-muted">
-        Already have an account?{" "}
+      <p className="text-center text-xs text-fg-muted tracking-wide">
+        HAVE AN ACCOUNT?{" "}
         <Link
           href="/login"
-          className="text-foreground font-medium hover:underline underline-offset-4"
+          className="text-fg font-bold hover:text-accent transition-colors underline underline-offset-4"
         >
-          Log in
+          [LOG_IN]
         </Link>
       </p>
     </form>

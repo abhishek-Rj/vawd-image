@@ -3,44 +3,78 @@ import LoginForm from "@/app/components/LoginForm";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Log in — VAWD Image",
+  title: "LOG_IN — VAWD_IMAGE",
   description:
     "Log in to VAWD Image to search, discover, and explore images using AI-powered visual search.",
 };
 
 export default function LoginPage() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center px-4">
-      {/* Subtle dot grid background */}
-      <div className="fixed inset-0 dot-grid opacity-30 pointer-events-none" />
+    <div className="flex min-h-screen bg-bg">
+      {/* Left — Branding Panel */}
+      <div className="hidden lg:flex lg:w-1/2 flex-col justify-between px-12 py-12 grid-border-r relative">
+        {/* Logo */}
+        <Link
+          href="/"
+          className="flex items-center gap-1 text-sm font-bold tracking-widest text-fg uppercase transition-opacity hover:opacity-70"
+        >
+          <span className="text-accent">▌</span>
+          VAWD<span className="text-fg-muted font-normal">_IMAGE</span>
+        </Link>
 
-      <div className="relative z-10 w-full max-w-sm space-y-8">
-        {/* Header */}
-        <div className="space-y-2 text-center">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-lg font-semibold text-foreground"
-          >
-            <svg
-              className="h-5 w-5 text-accent"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-            >
-              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
-            </svg>
-            vawd <span className="text-muted font-normal">image</span>
-          </Link>
-          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-            Welcome back
+        {/* Big Type */}
+        <div>
+          <h1 className="text-6xl xl:text-7xl font-bold tracking-tight text-fg uppercase leading-[1.05]">
+            LOG
+            <br />
+            _IN
           </h1>
-          <p className="text-sm text-muted">
-            Log in to your account to continue
-          </p>
+          <div className="mt-6 grid-border-t pt-6">
+            <p className="text-xs text-fg-dim uppercase tracking-[0.15em] max-w-xs leading-relaxed font-supply">
+              SIGN IN TO ACCESS YOUR VISUAL SEARCH PLATFORM.
+              UPLOAD IMAGES. SEARCH BY MEANING. DISCOVER VISUALLY.
+            </p>
+          </div>
         </div>
 
-        {/* Form card */}
-        <div className="rounded-xl border border-border bg-surface/50 p-6 backdrop-blur-sm">
-          <LoginForm />
+        {/* Bottom detail */}
+        <div className="flex items-center gap-4 text-[10px] text-fg-dim uppercase tracking-widest font-supply">
+          <span>SECURE AUTH</span>
+          <span className="text-border">│</span>
+          <span>ENCRYPTED</span>
+          <span className="text-border">│</span>
+          <span>PROTECTED</span>
+        </div>
+      </div>
+
+      {/* Right — Form Panel */}
+      <div className="flex flex-1 flex-col items-center justify-center px-6 py-16">
+        <div className="w-full max-w-sm space-y-8">
+          {/* Mobile logo */}
+          <div className="lg:hidden text-center">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-1 text-sm font-bold tracking-widest text-fg uppercase"
+            >
+              <span className="text-accent">▌</span>
+              VAWD<span className="text-fg-muted font-normal">_IMAGE</span>
+            </Link>
+          </div>
+
+          {/* Header */}
+          <div className="space-y-2">
+            <h2 className="text-2xl font-bold tracking-tight text-fg uppercase lg:hidden">
+              LOG_IN
+            </h2>
+            <p className="text-[10px] uppercase tracking-[0.15em] text-fg-dim lg:text-xs font-supply">
+              ENTER YOUR CREDENTIALS TO CONTINUE
+            </p>
+          </div>
+
+          {/* Form */}
+          <div className="grid-border p-6">
+            <LoginForm />
+          </div>
         </div>
       </div>
     </div>

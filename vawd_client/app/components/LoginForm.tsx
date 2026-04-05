@@ -18,14 +18,11 @@ export default function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full space-y-5">
+    <form onSubmit={handleSubmit} className="w-full space-y-6">
       {/* Email */}
-      <div className="space-y-2">
-        <label
-          htmlFor="login-email"
-          className="block text-sm font-medium text-foreground"
-        >
-          Email
+      <div>
+        <label htmlFor="login-email" className="label-brutal">
+          EMAIL_ADDRESS
         </label>
         <input
           id="login-email"
@@ -34,25 +31,22 @@ export default function LoginForm() {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@example.com"
           required
-          className="w-full rounded-lg border border-border bg-surface px-4 py-2.5 text-sm text-foreground placeholder:text-muted transition-all duration-200 focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none hover:border-muted"
+          className="input-brutal"
         />
       </div>
 
       {/* Password */}
-      <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <label
-            htmlFor="login-password"
-            className="block text-sm font-medium text-foreground"
-          >
-            Password
+      <div>
+        <div className="flex items-center justify-between mb-1.5">
+          <label htmlFor="login-password" className="label-brutal mb-0">
+            PASSWORD
           </label>
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="text-xs text-muted hover:text-foreground transition-colors"
+            className="text-[10px] uppercase tracking-widest text-fg-dim hover:text-fg transition-colors font-mono"
           >
-            {showPassword ? "Hide" : "Show"}
+            [{showPassword ? "HIDE" : "SHOW"}]
           </button>
         </div>
         <input
@@ -62,7 +56,7 @@ export default function LoginForm() {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="••••••••"
           required
-          className="w-full rounded-lg border border-border bg-surface px-4 py-2.5 text-sm text-foreground placeholder:text-muted transition-all duration-200 focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none hover:border-muted"
+          className="input-brutal"
         />
       </div>
 
@@ -71,47 +65,29 @@ export default function LoginForm() {
         id="login-submit"
         type="submit"
         disabled={isLoading}
-        className="relative w-full rounded-lg bg-foreground py-2.5 text-sm font-medium text-background transition-all duration-200 hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="btn-brutal-fill w-full disabled:opacity-40 disabled:cursor-not-allowed"
       >
         {isLoading ? (
           <span className="flex items-center justify-center gap-2">
-            <svg
-              className="h-4 w-4 animate-spin"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              />
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-              />
-            </svg>
-            Signing in…
+            <span className="inline-block h-3 w-3 border-2 border-bg border-t-transparent animate-spin" />
+            AUTHENTICATING...
           </span>
         ) : (
-          "Continue"
+          "CONTINUE →"
         )}
       </button>
 
       {/* Divider */}
-      <div className="relative flex items-center py-2">
-        <div className="flex-1 border-t border-border" />
-        <span className="px-4 text-xs text-muted">or</span>
-        <div className="flex-1 border-t border-border" />
+      <div className="divider-brutal">
+        <span className="text-[10px] uppercase tracking-widest text-fg-dim font-mono">
+          OR
+        </span>
       </div>
 
-      {/* OAuth placeholder */}
+      {/* OAuth */}
       <button
         type="button"
-        className="flex w-full items-center justify-center gap-3 rounded-lg border border-border py-2.5 text-sm text-foreground transition-all duration-200 hover:bg-surface-hover hover:border-muted"
+        className="btn-brutal w-full"
       >
         <svg className="h-4 w-4" viewBox="0 0 24 24">
           <path
@@ -131,17 +107,17 @@ export default function LoginForm() {
             d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
           />
         </svg>
-        Continue with Google
+        CONTINUE WITH GOOGLE
       </button>
 
       {/* Footer */}
-      <p className="text-center text-sm text-muted">
-        Don&apos;t have an account?{" "}
+      <p className="text-center text-xs text-fg-muted tracking-wide">
+        NO ACCOUNT?{" "}
         <Link
           href="/signup"
-          className="text-foreground font-medium hover:underline underline-offset-4"
+          className="text-fg font-bold hover:text-accent transition-colors underline underline-offset-4"
         >
-          Sign up
+          [SIGN_UP]
         </Link>
       </p>
     </form>
