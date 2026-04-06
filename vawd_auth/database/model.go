@@ -29,7 +29,8 @@ type Profile struct {
 	LastName	string			`json:"lastName"`	
 	UserName	string			`json:"userName" gorm:"uniqueIndex:idx_username_active,where:deleted_at IS NULL;not null"`
 	ProfilePic 	string			`json:"profilePic"`
-	Password	string			`json:"-" gorm:"not null"`
+	Password	*string			`json:"-"`
+	AuthProvider	string			`json:"auth_provider" gorm:"not null"`
 }
 
 type Image struct {
@@ -38,4 +39,5 @@ type Image struct {
 	User		*User			`json:"-" gorm:"foreignKey:UserID"`
 	Name		string			`json:"name"`
 	Url			string			`json:"url" gorm:"uniqueIndex"`
+	Progress	string			`json:"progress"`
 }

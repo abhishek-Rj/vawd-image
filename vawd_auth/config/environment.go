@@ -17,6 +17,8 @@ type Config struct {
 	BcryptCost 			int		`envconfig:"BCRYPT_COST" required:"true"`
 	JwtAccessSecret		string	`envconfig:"JWT_ACCESS_SECRET" required:"true"`
 	JwtRefreshSecret 	string	`envconfig:"JWT_REFRESH_SECRET" required:"true"` 
+	GoogleClientID 		string	`envconfig:"GOOGLE_CLIENT_ID" required:"true"`
+	GoogleClientSecret 	string	`envconfig:"GOOGLE_CLIENT_SECRET" required:"true"`
 }
 
 var App Config

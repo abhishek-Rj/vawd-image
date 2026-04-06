@@ -66,10 +66,11 @@ func CreateUser(c *gin.Context) {
 			FirstName: req.FirstName,
 			LastName:  req.LastName,
 			UserName:  req.UserName,
-			Password:  req.Password,
+			AuthProvider: "local",
 		}
 
-		profile.Password = string(hashPassword)
+		pass := string(hashPassword)
+		profile.Password = &pass
 
 		if err = tx.Create(&profile).Error; err != nil {
 			c.JSON(500, gin.H{

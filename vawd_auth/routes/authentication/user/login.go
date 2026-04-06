@@ -48,7 +48,7 @@ func LoginUser(c *gin.Context) {
 		user, err = gorm.G[database.Profile](database.DB).Where("user_name = ?", req.UserName).First(ctx)
 		if err != nil {
 			c.JSON(400, gin.H{
-				"error": "User with" + " " + req.UserName + " " + "usename cannot be found",
+				"error": "Invalid Credentials",
 			})
 			return
 		}
@@ -57,13 +57,20 @@ func LoginUser(c *gin.Context) {
 		user, err = gorm.G[database.Profile](database.DB).Where("email = ?", req.Email).First(ctx)
 		if err != nil {
 			c.JSON(400, gin.H{
-				"error": "User with" + " " + req.UserName + " " + "usename cannot be found",
+				"error": "Invalid Credentials",
 			})
 			return
 		}
 	}
 
-	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password))
+	if user.Password == nil {
+		c.JSON(400, gin.H{
+			"error": "User logged in with google",
+		})
+		return
+	}
+
+	err := bcrypt.CompareHashAndPassword([]byte(*user.Password), []byte(req.Password))
 	if err != nil {
 		c.JSON(400, gin.H{
 			"error": "Password Mismatch",
