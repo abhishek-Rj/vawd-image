@@ -19,8 +19,9 @@ type jwtTokens struct {
 }
 
 func GoogleCallback(c *gin.Context) {
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 7*time.Second)
+	defer cancel()
 	code := c.Query("code")
-	ctx := context.Background()
 	token, err := config.GoogleConfig.Exchange(ctx, code)
 	if err != nil {
 		c.JSON(400, gin.H{
@@ -58,11 +59,8 @@ func GoogleCallback(c *gin.Context) {
 	profilePic:= user["picture"].(string)
 	
 	var response map[string]string
-
-	ctx2, cancel := context.WithTimeout(c.Request.Context(), 7*time.Second)
-	defer cancel()
 	
-	profile, err := gorm.G[database.Profile](database.DB).Where("email = ?", email).First(ctx2)
+	profile, err := gorm.G[database.Profile](database.DB).Where("email = ?", email).First(ctx)
 	if err == nil {
 		response = map[string]string{
 			"userId": profile.UserID.String(),

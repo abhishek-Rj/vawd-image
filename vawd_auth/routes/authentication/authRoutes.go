@@ -2,6 +2,7 @@ package authentication
 
 import (
 	"github.com/abhishek-Rj/vawd-image/middleware"
+	"github.com/abhishek-Rj/vawd-image/routes/authentication/google"
 	"github.com/abhishek-Rj/vawd-image/routes/authentication/user"
 	"github.com/gin-gonic/gin"
 )
@@ -10,7 +11,8 @@ func AuthRoutes(auth *gin.RouterGroup) {
 	auth.POST("/create", user.CreateUser)	
 	auth.POST("/login", user.LoginUser)
 	auth.POST("/refresh", user.Refresh)
-	auth.POST("/auth/google")
+	auth.POST("/auth/google", google.GoogleLogin)
+	auth.POST("/auth/google/callback", google.GoogleCallback)
 
 	protected := auth.Group("/")
 	protected.Use(middleware.VerifyToken)
