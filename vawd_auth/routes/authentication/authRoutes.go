@@ -11,8 +11,8 @@ func AuthRoutes(auth *gin.RouterGroup) {
 	auth.POST("/create", user.CreateUser)	
 	auth.POST("/login", user.LoginUser)
 	auth.POST("/refresh", user.Refresh)
-	auth.POST("/auth/google", google.GoogleLogin)
-	auth.POST("/auth/google/callback", google.GoogleCallback)
+	auth.GET("/google", google.GoogleLogin)
+	auth.GET("/google/callback", google.GoogleCallback)
 
 	protected := auth.Group("/")
 	protected.Use(middleware.VerifyToken)

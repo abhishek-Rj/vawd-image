@@ -12,6 +12,7 @@ import (
 func main() {
 	config.Load()
 	database.ConnectionToDB()
+	config.InitGoogleConfig()
 	server := gin.Default()
 
 	server.Use(cors.New(cors.Config{

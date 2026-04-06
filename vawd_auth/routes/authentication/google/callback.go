@@ -3,6 +3,8 @@ package google
 import (
 	"context"
 	"encoding/json"
+	"fmt"
+	"math/rand"
 	"strings"
 	"time"
 
@@ -55,19 +57,15 @@ func GoogleCallback(c *gin.Context) {
 		lastName = parts[1]
 	}
 	email:= user["email"].(string)
-	username:= user["name"].(string) + time.Now().String()
+	base := strings.ToLower(strings.ReplaceAll(user["name"].(string), " ", ""))
+	suffix := rand.Intn(10000)
+	username := fmt.Sprintf("%s_%04d", base, suffix)
 	profilePic:= user["picture"].(string)
 	
-	var response map[string]string
-	
+
 	profile, err := gorm.G[database.Profile](database.DB).Where("email = ?", email).First(ctx)
 	if err == nil {
-		response = map[string]string{
-			"userId": profile.UserID.String(),
-			"username": profile.UserName,
-			"email": profile.Email,
-			"profilePic": profile.ProfilePic,
-		}
+
 		if profile.AuthProvider == "google" {
 			jwtT := &jwtTokens{}
 			err = func() error {
@@ -86,9 +84,7 @@ func GoogleCallback(c *gin.Context) {
 			c.SetCookie("refreshToken", (*jwtT).RefreshToken, 60*60*24*7, "/auth/refresh", "localhost", false, true)
 			c.SetCookie("accessToken", (*jwtT).AccessToken, 7*60*60, "/", "localhost", false, true)
 
-			c.JSON(200, gin.H{
-				"user": response,
-			})
+			c.Redirect(302, "http://localhost:3000/explore")
 			return
 		} else {
 			c.JSON(400, gin.H{
@@ -124,7 +120,7 @@ func GoogleCallback(c *gin.Context) {
 			})
 			return err
 		}
-		response = map[string]string{"userId": profile.UserID.String(), "email": profile.Email, "username": profile.UserName}
+
 		return nil
 	})		
 	if txErr != nil {
@@ -150,7 +146,5 @@ func GoogleCallback(c *gin.Context) {
 	c.SetCookie("refreshToken", (*jwtT).RefreshToken, 60*60*24*7, "/auth/refresh", "localhost", false, true)
 	c.SetCookie("accessToken", (*jwtT).AccessToken, 7*60*60, "/", "localhost", false, true)
 
-	c.JSON(200, gin.H{
-		"user": response,
-	})
+	c.Redirect(302, "http://localhost:3000/explore")
 }

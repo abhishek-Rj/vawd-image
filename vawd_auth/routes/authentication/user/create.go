@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com/abhishek-Rj/vawd-image/config"
@@ -34,9 +35,15 @@ func CreateUser(c *gin.Context) {
 
 	user, err := gorm.G[database.Profile](database.DB).Where("user_name = ? OR email = ?", req.UserName, req.Email).First(ctx)
 
-	if err != nil {
+	if err == nil {
 		c.JSON(401, gin.H{
 			"error": "User with " + user.Email + " already exits",
+		})
+		return
+	}
+	if !errors.Is(err, gorm.ErrRecordNotFound) {
+		c.JSON(500, gin.H{
+			"error": "Database error",
 		})
 		return
 	}

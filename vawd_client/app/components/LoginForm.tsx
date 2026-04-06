@@ -3,23 +3,70 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa";
+import { useRouter } from "next/navigation";
+import { useSession } from "@/context/session";
 
 export default function LoginForm() {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const { setUser } = useSession();
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setError("");
 
-    await new Promise((r) => setTimeout(r, 1500));
-    setIsLoading(false);
+    const isEmail = identifier.includes("@");
+    const payload = isEmail
+      ? { email: identifier, password }
+      : { username: identifier, password };
+
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_AUTH_SERVER_URL}/auth/login`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+          credentials: "include",
+        },
+      );
+
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Login failed");
+        return;
+      }
+
+      const userData = {
+        userId: data.user.userId,
+        email: data.user.email,
+        username: data.user.username,
+        profilePic:
+          data.user.profilePic ||
+          `https://api.dicebear.com/7.x/notionists/svg?seed=${data.user.username}&backgroundColor=ff4d00`,
+      };
+      setUser(userData);
+      router.replace("/explore");
+      router.refresh();
+    } catch (err) {
+      setError("Network error. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit} className="w-full space-y-6">
+      {error && (
+        <div className="text-red-500 text-xs font-bold uppercase grid-border bg-red-500/10 p-3 text-center tracking-widest">
+          [ERROR] {error}
+        </div>
+      )}
       {/* Identifier */}
       <div>
         <label
@@ -96,7 +143,10 @@ export default function LoginForm() {
       </div>
 
       {/* OAuth */}
-      <button type="button" className="btn-brutal w-full">
+      <a
+        href={`${process.env.NEXT_PUBLIC_AUTH_SERVER_URL}/auth/google`}
+        className="btn-brutal w-full flex items-center justify-center gap-2 decoration-transparent"
+      >
         <svg className="h-4 w-4" viewBox="0 0 24 24">
           <path
             fill="currentColor"
@@ -116,7 +166,7 @@ export default function LoginForm() {
           />
         </svg>
         CONTINUE WITH GOOGLE
-      </button>
+      </a>
 
       {/* Footer */}
       <p className="text-center text-xs text-fg-muted tracking-wide">
