@@ -3,7 +3,7 @@ import LoginForm from "@/app/components/LoginForm";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "LOG_IN — VAWD_IMAGE",
+  title: "Log_in — Vawd_Image",
   description:
     "Log in to VAWD_IMAGE to search, discover, and explore images using AI-powered visual search.",
 };

@@ -3,7 +3,7 @@ import SignupForm from "@/app/components/SignupForm";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "SIGN_UP — VAWD_IMAGE",
+  title: "Sign_up — Vawd_Image",
   description:
     "Create your VAWD_IMAGE account to start searching images with AI-powered visual understanding.",
 };
@@ -31,8 +31,8 @@ export default function SignupPage() {
           </h1>
           <div className="mt-6 grid-border-t pt-6">
             <p className="text-xs text-fg-dim uppercase tracking-[0.15em] max-w-xs leading-relaxed font-supply">
-              CREATE YOUR ACCOUNT TO START EXPLORING
-              AI-POWERED VISUAL SEARCH. UPLOAD. DISCOVER. FIND.
+              CREATE YOUR ACCOUNT TO START EXPLORING AI-POWERED VISUAL SEARCH.
+              UPLOAD. DISCOVER. FIND.
             </p>
           </div>
         </div>

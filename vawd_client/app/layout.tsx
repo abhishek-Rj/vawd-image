@@ -15,17 +15,17 @@ const monoSpec = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "VAWD_IMAGE — AI-Powered Visual Search",
+  title: "Vawd_Image — AI-Powered Visual Search",
   description:
     "Search images by visual content using CLIP embeddings and Pinecone vector search. Powered by a RAG pipeline for intelligent image retrieval.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = getServerSession();
+  const session = await getServerSession();
   return (
     <html
       lang="en"
