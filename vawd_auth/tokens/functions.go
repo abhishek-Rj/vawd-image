@@ -59,9 +59,9 @@ func (f *TokenFunctions) GenerateRefreshToken(userId string, email string, usern
 			Issuer:    "vawd_image",
 		},
 	}
-	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	secret := []byte(config.App.JwtRefreshSecret)
-	signedToken, err := accessToken.SignedString(secret)
+	signedToken, err := refreshToken.SignedString(secret)
 	if err != nil {
 		return "", err
 	}

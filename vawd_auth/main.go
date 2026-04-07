@@ -13,6 +13,7 @@ func main() {
 	config.Load()
 	database.ConnectionToDB()
 	config.InitGoogleConfig()
+	config.LoadAwsConfig()
 	server := gin.Default()
 
 	server.Use(cors.New(cors.Config{

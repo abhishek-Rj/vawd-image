@@ -19,6 +19,8 @@ type Config struct {
 	JwtRefreshSecret 	string	`envconfig:"JWT_REFRESH_SECRET" required:"true"` 
 	GoogleClientID 		string	`envconfig:"GOOGLE_CLIENT_ID" required:"true"`
 	GoogleClientSecret 	string	`envconfig:"GOOGLE_CLIENT_SECRET" required:"true"`
+	S3Bucket 		string	`envconfig:"S3_BUCKET" required:"true"`
+	S3Region 		string	`envconfig:"S3_REGION" required:"true"`
 }
 
 var App Config

@@ -2,16 +2,13 @@
 
 import { FiArrowUp } from "react-icons/fi";
 import { useState, useRef, useEffect } from "react";
-import { useSession } from "@/context/session";
 
 export default function SearchBar() {
   const [query, setQuery] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const { user } = useSession();
 
   // Auto-resize textarea
   useEffect(() => {
-    console.log(user);
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
       textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 120)}px`;
