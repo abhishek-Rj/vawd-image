@@ -22,4 +22,5 @@ func AuthRoutes(auth *gin.RouterGroup) {
 	protected.PUT("/update", user.UpdateUser)
 	protected.DELETE("/delete", user.DeleteUser)
 	protected.GET("/me", user.Me)
+	protected.POST("/logout", user.Logout)
 }

@@ -1,6 +1,10 @@
 import Link from "next/link";
+import { getServerSession } from "@/lib/auth";
+import LogoutButton from "./LogoutButton";
 
-export default function Navbar() {
+export default async function Navbar() {
+  const session = await getServerSession();
+
   return (
     <nav
       id="navbar"
@@ -18,21 +22,27 @@ export default function Navbar() {
         </Link>
 
         {/* Nav links */}
-        <div className="flex items-center">
-          <Link
-            href="/login"
-            id="navbar-login"
-            className="grid-border-l px-3 sm:px-5 py-4 text-[10px] sm:text-xs font-medium uppercase tracking-widest text-fg-muted transition-colors hover:text-fg hover:bg-surface"
-          >
-            [LOG_IN]
-          </Link>
-          <Link
-            href="/signup"
-            id="navbar-signup"
-            className="grid-border-l px-3 sm:px-5 py-4 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-fg bg-surface transition-colors hover:bg-fg hover:text-bg"
-          >
-            [SIGN_UP]
-          </Link>
+        <div className="flex items-center h-full">
+          {session ? (
+            <LogoutButton className="grid-border-l px-3 sm:px-5 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-fg hover:bg-surface transition-colors h-full" />
+          ) : (
+            <>
+              <Link
+                href="/login"
+                id="navbar-login"
+                className="grid-border-l px-3 sm:px-5 py-4 text-[10px] sm:text-xs font-medium uppercase tracking-widest text-fg-muted transition-colors hover:text-fg hover:bg-surface h-full flex items-center"
+              >
+                [LOG_IN]
+              </Link>
+              <Link
+                href="/signup"
+                id="navbar-signup"
+                className="grid-border-l px-3 sm:px-5 py-4 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-fg bg-surface transition-colors hover:bg-fg hover:text-bg h-full flex items-center"
+              >
+                [SIGN_UP]
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </nav>
