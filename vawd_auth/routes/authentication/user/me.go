@@ -1,24 +1,34 @@
 package user
 
 import (
+	"context"
+	"time"
+
+	"github.com/abhishek-Rj/vawd-image/database"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 func Me(c *gin.Context) {
 	userId := c.MustGet("userId").(string)
-	username := c.MustGet("username").(string)
-	email := c.MustGet("email").(string)
-	profilePic := c.MustGet("profilePic").(string)
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 7*time.Second)
+	defer cancel()
 
-	userDetail := map[string]string{
-		"userId": userId,
-		"username": username,
-		"email": email,
-		"profilePic": profilePic,
+	userProfile, err := gorm.G[database.Profile](database.DB).Where("user_id = ?", userId).First(ctx)
+	if err != nil {
+		c.AbortWithStatusJSON(400, gin.H{
+			"error": "Failed to get user details",
+		})
+		return
+	}
+	response := map[string]interface{}{
+		"userId": userProfile.UserID,
+		"username": userProfile.UserName,
+		"email": userProfile.Email,
+		"profilePic": userProfile.ProfilePic,
 	}
 
 	c.JSON(200, gin.H{
-		"message": "success",
-		"user": userDetail,
+		"user": response,
 	})
 }

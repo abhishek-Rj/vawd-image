@@ -9,6 +9,7 @@ export default function Sidebar() {
 
   const links = [
     { href: "/explore", label: "EXPLORE", icon: FiCompass },
+    { href: "?media=true", label: "MY_MEDIA", icon: FiImage },
     { href: "?upload=true", label: "UPLOAD_IMAGES", icon: FiUpload },
   ];
 

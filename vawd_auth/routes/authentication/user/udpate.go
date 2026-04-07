@@ -31,16 +31,16 @@ func UpdateUser(c *gin.Context) {
 
 	userDetails := map[string]any{}
 	if req.FirstName != nil {
-		userDetails["firstName"] = *(req.FirstName)
+		userDetails["first_name"] = *(req.FirstName)
 	}
 	if req.LastName != nil {
-		userDetails["lastName"] = *req.LastName
+		userDetails["last_name"] = *req.LastName
 	}
 	if req.ProfilePic != nil {
-		userDetails["profilePic"] = *req.ProfilePic
+		userDetails["profile_pic"] = *req.ProfilePic
 	}
 	if req.UserName != nil {
-		userDetails["userName"] = *req.UserName
+		userDetails["user_name"] = *req.UserName
 	}
 	
 	_, err := gorm.G[map[string]interface{}](database.DB).Table("profiles").Where("user_id = ?", userId).Updates(ctx, userDetails)

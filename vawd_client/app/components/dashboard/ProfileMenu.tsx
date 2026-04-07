@@ -59,14 +59,14 @@ export default function ProfileMenu() {
       {isOpen && (
         <div className="absolute top-12 right-0 w-48 bg-bg grid-border shadow-lg flex flex-col z-50 animate-fade-in">
           {/* Header */}
-          <div className="px-4 py-3 grid-border-b bg-surface">
-            <p className="text-xs font-bold text-fg uppercase tracking-widest break-all">
+          <Link href="?profile=true" className="px-4 py-3 grid-border-b bg-surface hover:bg-fg hover:text-bg transition-colors block group cursor-pointer text-fg">
+            <p className="text-xs font-bold uppercase tracking-widest break-all group-hover:text-bg">
               {user?.username || "GUEST_USER"}
             </p>
-            <p className="text-[10px] text-fg-dim font-supply uppercase tracking-wider mt-0.5">
+            <p className="text-[10px] text-fg-dim font-supply uppercase tracking-wider mt-0.5 group-hover:text-bg/70">
               FREE TIER
             </p>
-          </div>
+          </Link>
 
           {/* Menu Items */}
           <div className="py-2">

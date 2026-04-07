@@ -23,13 +23,6 @@ func VerifyToken(c *gin.Context) {
 	}
 
 	userId := userDetails.UserID
-	username := userDetails.Username
-	email := userDetails.Email
-	profilePic := userDetails.ProfilePic
-
 	c.Set("userId", userId)
-	c.Set("username", username)
-	c.Set("email", email)
-	c.Set("profilePic", profilePic)
 	c.Next()
 }

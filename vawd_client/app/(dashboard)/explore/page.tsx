@@ -1,5 +1,7 @@
 import SearchBar from "@/app/components/explore/SearchBar";
 import UploadModal from "@/app/components/dashboard/UploadModal";
+import MyMediaModal from "@/app/components/dashboard/MyMediaModal";
+import ProfileModal from "@/app/components/dashboard/ProfileModal";
 import { cookies } from "next/headers";
 import Image from "next/image";
 
@@ -43,6 +45,8 @@ export default async function ExplorePage(props: {
 }) {
   const searchParams = await props.searchParams;
   const isUploadOpen = searchParams?.upload === "true";
+  const isMediaOpen = searchParams?.media === "true";
+  const isProfileOpen = searchParams?.profile === "true";
   const images = await getImages();
   // Generate deterministic-ish sizes for masonry (to avoid hydration mismatch if this were dynamic, but we can just hardcode an array of heights for simplicity)
   const heights = [
@@ -53,6 +57,8 @@ export default async function ExplorePage(props: {
   return (
     <div className="w-full min-h-full relative pb-40">
       <UploadModal isOpen={isUploadOpen} />
+      <MyMediaModal isOpen={isMediaOpen} />
+      <ProfileModal isOpen={isProfileOpen} />
 
       {/* Header section (optional, to maintain brutalist aesthetic padding) */}
       <div className="px-8 py-10 grid-border-b bg-bg/50 backdrop-blur sticky top-0 z-30 pointer-events-none">

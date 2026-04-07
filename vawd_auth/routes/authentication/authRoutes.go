@@ -20,6 +20,7 @@ func AuthRoutes(auth *gin.RouterGroup) {
 	protected.GET("/user", user.GetUser)
 	protected.GET("/images", user.GetUserImage)
 	protected.PUT("/update", user.UpdateUser)
+	protected.POST("/profilePic", user.UploadProfilePic)
 	protected.DELETE("/delete", user.DeleteUser)
 	protected.GET("/me", user.Me)
 	protected.POST("/logout", user.Logout)
