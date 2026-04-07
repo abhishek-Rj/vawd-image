@@ -80,11 +80,11 @@ func LoginUser(c *gin.Context) {
 
 	jwtT := &jwtTokens{}
 	err = func() error {
-		refreshToken, err := tokens.TokenMethods.GenerateRefreshToken(user.ID.String(), user.Email, user.UserName, user.ProfilePic)
+		refreshToken, err := tokens.TokenMethods.GenerateRefreshToken(user.UserID.String(), user.Email, user.UserName, user.ProfilePic)
 		if err != nil {
 			return err
 		}
-		accessToken, err := tokens.TokenMethods.GenerateAccessToken(user.ID.String(), user.Email, user.UserName, user.ProfilePic)
+		accessToken, err := tokens.TokenMethods.GenerateAccessToken(user.UserID.String(), user.Email, user.UserName, user.ProfilePic)
 		if err != nil {
 			return err
 		}
@@ -100,9 +100,9 @@ func LoginUser(c *gin.Context) {
 	}
 	response := map[string]string{"userId": user.UserID.String(), "email": user.Email, "username": user.UserName}
 
-	c.SetCookie("refreshToken", (*jwtT).RefreshToken, 60*60*24*7, "/auth/refresh", "localhost", false, true)
+	c.SetCookie("refreshToken", (*jwtT).RefreshToken, 24*60*60*15, "/auth/refresh", "localhost", false, true)
 
-	c.SetCookie("accessToken", (*jwtT).AccessToken, 7*60*60, "/", "localhost", false, true)
+	c.SetCookie("accessToken", (*jwtT).AccessToken, 24*60*60, "/", "localhost", false, true)
 
 	c.JSON(200, gin.H{
 		"user": response,

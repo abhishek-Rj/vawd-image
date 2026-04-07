@@ -1,0 +1,168 @@
+"use client";
+
+import { useState, useRef } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { FiX, FiUploadCloud } from "react-icons/fi";
+
+interface UploadModalProps {
+  isOpen: boolean;
+}
+
+export default function UploadModal({ isOpen }: UploadModalProps) {
+  const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [error, setError] = useState("");
+
+  if (!isOpen) return null;
+
+  const handleClose = () => {
+    setFile(null);
+    setPreviewUrl(null);
+    setError("");
+    router.replace("/explore");
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
+      if (selectedFile.size > 5 * 1024 * 1024) {
+        setError("FILE_TOO_LARGE (MAX 5MB)");
+        return;
+      }
+      setFile(selectedFile);
+      setPreviewUrl(URL.createObjectURL(selectedFile));
+      setError("");
+    }
+  };
+
+  const handleUpload = async () => {
+    if (!file) {
+      setError("NO_FILE_SELECTED");
+      return;
+    }
+    setIsUploading(true);
+    setError("");
+
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_AUTH_SERVER_URL}/posts/upload`,
+        {
+          method: "POST",
+          body: formData,
+          credentials: "include",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("UPLOAD_FAILED");
+      }
+
+      handleClose();
+      router.refresh(); // Fetch new images on grid
+    } catch (err) {
+      setError("UPLOAD_FAILED_TRY_AGAIN");
+      console.error(err);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-bg/80 backdrop-blur-sm">
+      <div className="w-full max-w-md bg-bg grid-border shadow-2xl flex flex-col relative overflow-hidden animate-fade-in">
+        {/* Header */}
+        <div className="px-6 py-4 grid-border-b bg-surface flex items-center justify-between">
+          <h2 className="text-sm font-bold tracking-widest text-fg uppercase">
+            UPLOAD<span className="text-accent">_MEDIA</span>
+          </h2>
+          <button
+            onClick={handleClose}
+            className="text-fg-dim hover:text-fg transition-colors"
+          >
+            <FiX size={20} />
+          </button>
+        </div>
+
+        {/* Body */}
+        <div className="p-6 flex flex-col space-y-4">
+          {(!file || !previewUrl) ? (
+            <div
+              onClick={() => fileInputRef.current?.click()}
+              className="w-full h-48 grid-border border-dashed flex flex-col items-center justify-center text-fg-dim hover:text-fg hover:border-fg transition-colors cursor-pointer bg-surface/50 hover:bg-surface"
+            >
+              <FiUploadCloud size={32} className="mb-2 text-accent" />
+              <span className="text-xs font-mono uppercase tracking-widest">
+                CLICK_TO_BROWSE
+              </span>
+            </div>
+          ) : (
+            <div className="w-full flex justify-center bg-surface grid-border relative p-1 group">
+              <button
+                onClick={() => {
+                  setFile(null);
+                  setPreviewUrl(null);
+                }}
+                className="absolute top-2 right-2 p-1.5 bg-bg/90 text-fg hover:bg-red-500 hover:text-white transition-colors z-10 grid-border"
+              >
+                <FiX size={14} />
+              </button>
+              <div className="relative w-full h-48">
+                <Image
+                  src={previewUrl}
+                  alt="Preview"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+            </div>
+          )}
+
+          <input
+            type="file"
+            ref={fileInputRef}
+            className="hidden"
+            accept="image/png, image/jpeg, image/webp"
+            onChange={handleFileChange}
+          />
+
+          {file && (
+            <div className="text-[10px] font-supply uppercase tracking-widest text-fg-dim truncate">
+              [FILE]: {file.name}
+            </div>
+          )}
+
+          {error && (
+            <div className="text-[10px] uppercase font-bold text-red-500 tracking-widest text-center mt-2">
+              🚨 {error}
+            </div>
+          )}
+        </div>
+
+        {/* Footer actions */}
+        <div className="grid-border-t grid grid-cols-2">
+          <button
+            onClick={handleClose}
+            className="grid-border-r py-3 sm:py-4 text-xs font-bold uppercase tracking-widest text-fg-muted hover:bg-surface hover:text-fg transition-colors disabled:opacity-50"
+            disabled={isUploading}
+          >
+            CANCEL
+          </button>
+          <button
+            onClick={handleUpload}
+            disabled={!file || isUploading}
+            className="py-3 sm:py-4 text-xs font-bold uppercase tracking-widest text-bg bg-accent transition-colors disabled:opacity-50 flex items-center justify-center gap-2 hover:bg-fg"
+          >
+            {isUploading ? "UPLOADING..." : "UPLOAD_IMAGE"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}

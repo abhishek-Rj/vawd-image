@@ -65,7 +65,6 @@ func GoogleCallback(c *gin.Context) {
 
 	profile, err := gorm.G[database.Profile](database.DB).Where("email = ?", email).First(ctx)
 	if err == nil {
-
 		if profile.AuthProvider == "google" {
 			jwtT := &jwtTokens{}
 			err = func() error {
@@ -81,8 +80,8 @@ func GoogleCallback(c *gin.Context) {
 				jwtT.AccessToken = accessToken
 				return nil
 			}()
-			c.SetCookie("refreshToken", (*jwtT).RefreshToken, 60*60*24*7, "/auth/refresh", "localhost", false, true)
-			c.SetCookie("accessToken", (*jwtT).AccessToken, 7*60*60, "/", "localhost", false, true)
+			c.SetCookie("refreshToken", (*jwtT).RefreshToken, 24*60*60*15, "/auth/refresh", "localhost", false, true)
+			c.SetCookie("accessToken", (*jwtT).AccessToken, 24*60*60, "/", "localhost", false, true)
 
 			c.Redirect(302, "http://localhost:3000/explore")
 			return
@@ -93,6 +92,7 @@ func GoogleCallback(c *gin.Context) {
 			return
 		}
 	}	
+	var userProfile database.Profile
 
 	txErr := database.DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		user := database.User{}
@@ -103,7 +103,7 @@ func GoogleCallback(c *gin.Context) {
 			return err
 		}
 
-		profile := database.Profile{
+		userProfile = database.Profile{
 			UserID:    user.ID,
 			Email:     email,
 			FirstName: firstName,
@@ -114,7 +114,7 @@ func GoogleCallback(c *gin.Context) {
 			AuthProvider: "google",
 		}
 
-		if err = tx.Create(&profile).Error; err != nil {
+		if err = tx.Create(&userProfile).Error; err != nil {
 			c.JSON(500, gin.H{
 				"error": "Failed to create Profile",
 			})
@@ -131,11 +131,11 @@ func GoogleCallback(c *gin.Context) {
 	}
 	jwtT := &jwtTokens{}
 	err = func() error {
-		refreshToken, err := tokens.TokenMethods.GenerateRefreshToken(profile.UserID.String(), email, username, profilePic)
+		refreshToken, err := tokens.TokenMethods.GenerateRefreshToken(userProfile.UserID.String(), email, username, profilePic)
 		if err != nil {
 			return err
 		}
-		accessToken, err := tokens.TokenMethods.GenerateAccessToken(profile.UserID.String(), email, username, profilePic)
+		accessToken, err := tokens.TokenMethods.GenerateAccessToken(userProfile.UserID.String(), email, username, profilePic)
 		if err != nil {
 			return err
 		}
@@ -143,8 +143,8 @@ func GoogleCallback(c *gin.Context) {
 		jwtT.AccessToken = accessToken
 		return nil
 	}()
-	c.SetCookie("refreshToken", (*jwtT).RefreshToken, 60*60*24*7, "/auth/refresh", "localhost", false, true)
-	c.SetCookie("accessToken", (*jwtT).AccessToken, 7*60*60, "/", "localhost", false, true)
+	c.SetCookie("refreshToken", (*jwtT).RefreshToken, 24*60*60*15, "/auth/refresh", "localhost", false, true)
+	c.SetCookie("accessToken", (*jwtT).AccessToken, 24*60*60, "/", "localhost", false, true)
 
 	c.Redirect(302, "http://localhost:3000/explore")
 }

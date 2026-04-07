@@ -29,7 +29,7 @@ func Refresh(c *gin.Context) {
 		return
 	}
 
-	c.SetCookie("accessToken", accessToken, 7*60*60, "/", "localhost", false, true)
+	c.SetCookie("accessToken", accessToken, 24*60*60, "/", "localhost", false, true)
 
 	c.JSON(200, gin.H{
 		"user": userDetails,

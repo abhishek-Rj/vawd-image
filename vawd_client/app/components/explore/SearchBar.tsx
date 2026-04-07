@@ -1,11 +1,15 @@
 "use client";
 
-import { FiArrowUp } from "react-icons/fi";
+import { FiArrowUp, FiPlus } from "react-icons/fi";
 import { useState, useRef, useEffect } from "react";
+import { useSession } from "@/context/session";
+import { useRouter } from "next/navigation";
 
 export default function SearchBar() {
   const [query, setQuery] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const { user } = useSession();
+  const router = useRouter();
 
   // Auto-resize textarea
   useEffect(() => {
@@ -31,7 +35,14 @@ export default function SearchBar() {
 
   return (
     <div className="fixed bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2 w-full max-w-2xl px-6 z-40 pointer-events-none">
-      <div className="pointer-events-auto bg-bg/90 backdrop-blur grid-border p-2 shadow-2xl flex items-end flex-row gap-2 transition-colors focus-within:border-fg w-full">
+      <div className="pointer-events-auto bg-bg/90 backdrop-blur grid-border p-2 shadow-2xl flex items-end flex-row gap-2 transition-colors w-full">
+        <button
+          type="button"
+          onClick={() => router.push("?upload=true")}
+          className="mb-1 w-10 h-10 flex shrink-0 items-center justify-center bg-surface text-fg-muted transition-all hover:bg-fg hover:text-bg"
+        >
+          <FiPlus size={18} strokeWidth={3} />
+        </button>
         <form
           onSubmit={handleSubmit}
           className="flex-1 flex items-center px-4 pt-1"

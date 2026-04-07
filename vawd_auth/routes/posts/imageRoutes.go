@@ -11,7 +11,7 @@ func ImageRoutes(post *gin.RouterGroup) {
 	proctected := post.Group("/")
 	proctected.Use(middleware.VerifyToken)
 
-	post.POST("/upload", images.ImageUpload)
-	post.DELETE("/delete", images.DeleteImages)
-	post.GET("/all", images.GetAllImages)
+	proctected.POST("/upload", images.ImageUpload)
+	proctected.DELETE("/delete", images.DeleteImages)
+	proctected.GET("/all", images.GetAllImages)
 }

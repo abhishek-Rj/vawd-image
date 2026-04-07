@@ -8,7 +8,7 @@ import (
 func VerifyToken(c *gin.Context) {
 	accessToken, err := c.Cookie("accessToken");
 	if err != nil {
-		c.JSON(400, gin.H{
+		c.AbortWithStatusJSON(400, gin.H{
 			"error": "cannot get access token",
 		})
 		return
@@ -16,7 +16,7 @@ func VerifyToken(c *gin.Context) {
 
 	userDetails, err := tokens.TokenMethods.VerifyAccessToken(accessToken)
 	if err != nil {
-		c.JSON(401, gin.H{
+		c.AbortWithStatusJSON(401, gin.H{
 			"error": err,
 		})
 		return 

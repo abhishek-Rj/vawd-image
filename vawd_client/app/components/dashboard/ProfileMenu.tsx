@@ -70,20 +70,6 @@ export default function ProfileMenu() {
 
           {/* Menu Items */}
           <div className="py-2">
-            <Link
-              href="/settings"
-              className="flex items-center gap-3 px-4 py-2 hover:bg-surface text-xs font-mono uppercase tracking-widest text-fg-muted hover:text-fg transition-colors"
-            >
-              <FiSettings size={14} className="text-accent" />
-              SETTINGS
-            </Link>
-            <Link
-              href="/help"
-              className="flex items-center gap-3 px-4 py-2 hover:bg-surface text-xs font-mono uppercase tracking-widest text-fg-muted hover:text-fg transition-colors"
-            >
-              <FiHelpCircle size={14} className="text-accent" />
-              HELP
-            </Link>
             <div className="my-2 grid-border-t border-border" />
             <button
               onClick={handleLogout}

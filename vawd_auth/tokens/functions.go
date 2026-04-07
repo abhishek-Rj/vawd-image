@@ -17,7 +17,7 @@ func (f *TokenFunctions) GenerateAccessToken(userId string, email string, userna
 		Username:   username,
 		ProfilePic: profilePic,
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(7 * time.Hour)),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 			Issuer:    "vawd_image",
 		},
@@ -54,7 +54,7 @@ func (f *TokenFunctions) GenerateRefreshToken(userId string, email string, usern
 		Username:   username,
 		ProfilePic: profilePic,
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(7 * 24 * time.Hour)),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(15 * 24 * time.Hour)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 			Issuer:    "vawd_image",
 		},

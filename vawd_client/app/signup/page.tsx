@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import SignupForm from "@/app/components/SignupForm";
 import Link from "next/link";
+import { getServerSession } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Sign_up — Vawd_Image",
@@ -8,7 +10,11 @@ export const metadata: Metadata = {
     "Create your VAWD_IMAGE account to start searching images with AI-powered visual understanding.",
 };
 
-export default function SignupPage() {
+export default async function SignupPage() {
+  const session = await getServerSession();
+  if (session) {
+    redirect("/explore");
+  }
   return (
     <div className="flex min-h-screen bg-bg">
       {/* Left — Branding Panel */}
