@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import LoginForm from "@/app/components/LoginForm";
 import Link from "next/link";
+import { getServerSession } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Log_in — Vawd_Image",
@@ -8,7 +10,11 @@ export const metadata: Metadata = {
     "Log in to VAWD_IMAGE to search, discover, and explore images using AI-powered visual search.",
 };
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const session = await getServerSession();
+  if (session) {
+    redirect("/explore");
+  }
   return (
     <div className="flex min-h-screen bg-bg">
       {/* Left — Branding Panel */}

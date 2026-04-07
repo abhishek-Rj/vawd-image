@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 interface user {
   userId: string;
@@ -23,7 +23,13 @@ export function SessionProvider({
   children: React.ReactNode;
   session: any;
 }) {
-  const [user, setUser] = useState<user | null>(session?.user || null);
+  const [user, setUser] = useState<user | null>(session || null);
+
+  useEffect(() => {
+    if (session) {
+      setUser(session);
+    }
+  }, [session]);
   return (
     <SessionContext.Provider value={{ user, setUser }}>
       {children}

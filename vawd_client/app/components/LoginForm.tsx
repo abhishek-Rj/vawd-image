@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa";
 import { useRouter } from "next/navigation";
@@ -14,7 +14,6 @@ export default function LoginForm() {
   const [error, setError] = useState("");
   const { setUser } = useSession();
   const router = useRouter();
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
