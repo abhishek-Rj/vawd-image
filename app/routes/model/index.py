@@ -56,10 +56,8 @@ async def populate_image_embedding(image: UploadFile = File(...)):
 async def image_retrieve(image: UploadFile = File(...)):
     try: 
         contents = await image.read()
-        
         if not contents:
             raise HTTPException(status_code=400, detail="Empty File")
-        
         try:
             image = Image.open(io.BytesIO(contents)).convert("RGB")
         except UnidentifiedImageError:

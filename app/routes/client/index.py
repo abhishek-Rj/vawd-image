@@ -15,12 +15,10 @@ async def populate_text_embedding(prompt: Prompt):
     try: 
         if not prompt.prompt:
             raise HTTPException(status_code=400, detail="Empty Prompt")
-        
         try:
             embedding = get_text_embedding(prompt.prompt)
         except Exception as e:
             raise HTTPException(status_code=400, detail=str(e))
-        
         try:
             results = pinecone.query(
                 vector=embedding,
@@ -30,9 +28,7 @@ async def populate_text_embedding(prompt: Prompt):
             print(results)
         except Exception as e:
             raise HTTPException(status_code=400, detail=str(e))
-        
         return {"result": format_data(results)}
-
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
         
@@ -42,12 +38,10 @@ async def prompt_retrieve(prompt: Prompt):
     try: 
         if not prompt.prompt:
             raise HTTPException(status_code=400, detail="Empty Prompt")
-        
         try:
             embedding = get_text_embedding(prompt.prompt)
         except Exception as e:
             raise HTTPException(status_code=400, detail=str(e))
-        
         return {"embedding": embedding}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

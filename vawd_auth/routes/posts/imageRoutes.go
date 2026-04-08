@@ -14,4 +14,5 @@ func ImageRoutes(post *gin.RouterGroup) {
 	proctected.POST("/upload", images.ImageUpload)
 	proctected.DELETE("/delete", images.DeleteImages)
 	proctected.GET("/all", images.GetAllImages)
+	proctected.POST("/search", images.ImageSearch)
 }

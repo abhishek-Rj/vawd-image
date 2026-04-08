@@ -21,6 +21,7 @@ type Config struct {
 	GoogleClientSecret 	string	`envconfig:"GOOGLE_CLIENT_SECRET" required:"true"`
 	S3Bucket 		string	`envconfig:"S3_BUCKET" required:"true"`
 	S3Region 		string	`envconfig:"S3_REGION" required:"true"`
+	PythonServerUrl 	string	`envconfig:"PYTHON_SERVER_URL" required:"true"`
 }
 
 var App Config

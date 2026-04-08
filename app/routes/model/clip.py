@@ -16,9 +16,7 @@ def get_image_embedding(image: Image.Image):
         out = model.get_image_features(**inputs)
     
     features = out.pooler_output
-
     embedding = features[0].cpu().detach().numpy().flatten()
-    
     embedding = embedding / np.linalg.norm(embedding)
 
     return embedding.tolist()
