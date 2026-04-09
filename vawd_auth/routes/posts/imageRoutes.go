@@ -8,6 +8,7 @@ import (
 
 
 func ImageRoutes(post *gin.RouterGroup) {
+	post.POST("/update_image_status", images.UpdateImageStatus)
 	proctected := post.Group("/")
 	proctected.Use(middleware.VerifyToken)
 

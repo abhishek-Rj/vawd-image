@@ -22,6 +22,7 @@ type Config struct {
 	S3Bucket 		string	`envconfig:"S3_BUCKET" required:"true"`
 	S3Region 		string	`envconfig:"S3_REGION" required:"true"`
 	PythonServerUrl 	string	`envconfig:"PYTHON_SERVER_URL" required:"true"`
+	KafkaProducer 	string	`envconfig:"KAFKA_PRODUCER" required:"true"`
 }
 
 var App Config

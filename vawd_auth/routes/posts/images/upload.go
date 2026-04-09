@@ -2,8 +2,10 @@ package images
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/abhishek-Rj/vawd-image/config"
@@ -95,6 +97,24 @@ func ImageUpload(c *gin.Context) {
 		})
 		return
 	}
+
+	message := map[string]interface{}{
+		"user_id": userID,
+		"image_id": image.ID,
+		"image_url": imageUrl,
+		"filename": fileHeader.Filename,
+	}
+
+	jsonData, err := json.Marshal(message)
+
+	resp, err := http.Post(config.App.KafkaProducer, "application/json", strings.NewReader(string(jsonData)))
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+			"error": "Cannot send message to kafka",
+		})
+		return
+	}
+	defer resp.Body.Close()
 		
 	c.JSON(200, gin.H{
 		"message":  "Image uploaded successfully",

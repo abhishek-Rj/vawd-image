@@ -4,6 +4,7 @@ from app.routes.model.format import format_data
 from app.lib.pinecone_config import pinecone
 from fastapi import HTTPException
 from pydantic import BaseModel
+from app.lib.kafka import send_message
 
 userRouter = APIRouter()
 
@@ -22,7 +23,7 @@ async def populate_text_embedding(prompt: Prompt):
         try:
             results = pinecone.query(
                 vector=embedding,
-                top_k=1,
+                top_k=10,
                 include_metadata=True
             )
             print(results)
@@ -45,3 +46,7 @@ async def prompt_retrieve(prompt: Prompt):
         return {"embedding": embedding}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@userRouter.post("/kafka")
+async def kafka_producer(msg: dict):
+    send_message(msg)
