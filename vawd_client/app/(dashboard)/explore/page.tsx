@@ -122,7 +122,7 @@ export default async function ExplorePage(props: {
                       alt="Uploaded media"
                       width={500}
                       height={500}
-                      className="w-full h-auto object-cover grayscale brightness-110 contrast-125"
+                      className="w-full h-auto object-cover brightness-110 contrast-125 hover:brightness-100 hover:contrast-100 transition-all duration-300"
                     />
                   </div>
                   {/* Minimal box decorations */}
