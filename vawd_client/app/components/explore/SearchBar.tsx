@@ -5,11 +5,16 @@ import { useState, useRef, useEffect } from "react";
 import { useSession } from "@/context/session";
 import { useRouter } from "next/navigation";
 
-export default function SearchBar() {
-  const [query, setQuery] = useState("");
+export default function SearchBar({ initialQuery = "" }: { initialQuery?: string }) {
+  const [query, setQuery] = useState(initialQuery);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { user } = useSession();
   const router = useRouter();
+
+  // Sync state with URL parameter if it changes
+  useEffect(() => {
+    setQuery(initialQuery);
+  }, [initialQuery]);
 
   // Auto-resize textarea
   useEffect(() => {
@@ -21,9 +26,11 @@ export default function SearchBar() {
 
   const handleSubmit = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    if (!query.trim()) return;
-    console.log("Searching for:", query);
-    setQuery("");
+    if (!query.trim()) {
+      router.push("/explore");
+      return;
+    }
+    router.push(`?q=${encodeURIComponent(query.trim())}`);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {

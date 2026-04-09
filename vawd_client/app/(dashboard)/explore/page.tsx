@@ -40,6 +40,42 @@ async function getImages(): Promise<ImageType[]> {
   }
 }
 
+async function searchImages(prompt: string): Promise<ImageType[]> {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("accessToken")?.value;
+
+  if (!accessToken) return [];
+
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_AUTH_SERVER_URL}/posts/search`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `accessToken=${accessToken}`,
+        },
+        body: JSON.stringify({ prompt }),
+        cache: "no-store",
+      },
+    );
+    if (!res.ok) return [];
+    const data = await res.json();
+    if (!data.result) return [];
+    
+    return data.result.map((item: any) => ({
+      id: item.id,
+      url: item.metadata.image_url,
+      userId: item.metadata.user_id,
+      name: item.metadata.filename,
+      progress: "100",
+    })) || [];
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+
 export default async function ExplorePage(props: {
   searchParams: Promise<{ [key: string]: string | undefined }>;
 }) {
@@ -47,7 +83,8 @@ export default async function ExplorePage(props: {
   const isUploadOpen = searchParams?.upload === "true";
   const isMediaOpen = searchParams?.media === "true";
   const isProfileOpen = searchParams?.profile === "true";
-  const images = await getImages();
+  const q = searchParams?.q || "";
+  const images = q ? await searchImages(q) : await getImages();
   // Generate deterministic-ish sizes for masonry (to avoid hydration mismatch if this were dynamic, but we can just hardcode an array of heights for simplicity)
   const heights = [
     250, 420, 310, 380, 200, 300, 410, 260, 390, 290, 450, 320, 240, 370, 280,
@@ -94,7 +131,7 @@ export default async function ExplorePage(props: {
                   </div>
                   {/* Pseudo image ID */}
                   <div className="absolute bottom-4 right-4 text-[10px] font-supply text-border-light uppercase group-hover:text-fg-muted transition-colors duration-300 tracking-widest bg-bg/80 px-2 py-1">
-                    [IMG_{String(i).padStart(4, "0")}]
+                    [{img.name}]
                   </div>
                   <div className="absolute inset-0 bg-fg opacity-0 group-hover:opacity-[0.02] transition-opacity duration-300 pointer-events-none" />
                 </div>
@@ -116,7 +153,7 @@ export default async function ExplorePage(props: {
         </div>
       </div>
 
-      <SearchBar />
+      <SearchBar initialQuery={q} />
     </div>
   );
 }

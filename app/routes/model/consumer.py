@@ -32,13 +32,12 @@ for msg in consumer:
         image_url = data["image_url"]
         user_id = data["user_id"]
         filename = data["filename"]
-
+        image_id = data["image_id"]
+        
         img_bytes = img_to_bytes(image_url)
         image = Image.open(img_bytes).convert("RGB")
 
         embedding = get_image_embedding(image)
-
-        image_id = str(uuid.uuid4())
 
         pinecone.upsert([{
             "id": image_id,

@@ -2,6 +2,7 @@ package images
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -39,7 +40,7 @@ func UpdateImageStatus(c *gin.Context) {
 
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 7*time.Second)
 	defer cancel()
-	_, err = gorm.G[map[string]interface{}](database.DB).Table("images").Where("id = ?", imageID).Updates(ctx, result)
+	tx, err := gorm.G[map[string]interface{}](database.DB).Table("images").Where("id = ?", imageID).Updates(ctx, result)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": "Cannot update image status",
@@ -47,6 +48,7 @@ func UpdateImageStatus(c *gin.Context) {
 		return
 	}
 
+	fmt.Println(tx)
 	c.JSON(http.StatusOK, gin.H{
 		"msg": "Image status updated successfully",
 	})
