@@ -62,14 +62,15 @@ async function searchImages(prompt: string): Promise<ImageType[]> {
     if (!res.ok) return [];
     const data = await res.json();
     if (!data.result) return [];
-    
-    return data.result.map((item: any) => ({
-      id: item.id,
-      url: item.metadata.image_url,
-      userId: item.metadata.user_id,
-      name: item.metadata.filename,
-      progress: "100",
-    })) || [];
+
+    return (
+      data.result.map((item: any) => ({
+        id: item.id,
+        url: item.metadata.image_url,
+        userId: item.metadata.user_id,
+        name: item.metadata.filename,
+      })) || []
+    );
   } catch (error) {
     console.error(error);
     return [];
