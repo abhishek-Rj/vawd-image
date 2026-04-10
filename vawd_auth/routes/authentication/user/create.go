@@ -3,6 +3,7 @@ package user
 import (
 	"context"
 	"errors"
+	"net/http"
 	"time"
 
 	"github.com/abhishek-Rj/vawd-image/config"
@@ -110,10 +111,10 @@ func CreateUser(c *gin.Context) {
 			"error": "at",
 		})
 	}
+	c.SetSameSite(http.SameSiteNoneMode)
+	c.SetCookie("refreshToken", refreshToken, 24*60*60*15, "/auth/refresh", ".abhishekraj.xyz", true, true)
 
-	c.SetCookie("refreshToken", refreshToken, 24*60*60*15, "/auth/refresh", "localhost", false, true)
-
-	c.SetCookie("accessToken", accessToken, 24*60*60, "/", "localhost", false, true)
+	c.SetCookie("accessToken", accessToken, 24*60*60, "/", ".abhishekraj.xyz", true, true)
 
 	c.JSON(201, gin.H{
 		"user": response,

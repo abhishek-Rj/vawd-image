@@ -1,6 +1,8 @@
 package user
 
 import (
+	"net/http"
+
 	"github.com/abhishek-Rj/vawd-image/tokens"
 	"github.com/gin-gonic/gin"
 )
@@ -28,8 +30,8 @@ func Refresh(c *gin.Context) {
 		})
 		return
 	}
-
-	c.SetCookie("accessToken", accessToken, 24*60*60, "/", "localhost", false, true)
+	c.SetSameSite(http.SameSiteNoneMode)
+	c.SetCookie("accessToken", accessToken, 24*60*60, "/", ".abhishekraj.xyz", true, true)
 
 	c.JSON(200, gin.H{
 		"user": userDetails,

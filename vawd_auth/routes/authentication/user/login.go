@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"net/http"
 	"time"
 
 	"github.com/abhishek-Rj/vawd-image/database"
@@ -99,10 +100,11 @@ func LoginUser(c *gin.Context) {
 		return
 	}
 	response := map[string]string{"userId": user.UserID.String(), "email": user.Email, "username": user.UserName}
+	c.SetSameSite(http.SameSiteNoneMode)
 
-	c.SetCookie("refreshToken", (*jwtT).RefreshToken, 24*60*60*15, "/auth/refresh", "localhost", false, true)
+	c.SetCookie("refreshToken", (*jwtT).RefreshToken, 24*60*60*15, "/auth/refresh", ".abhishekraj.xyz", true, true)
 
-	c.SetCookie("accessToken", (*jwtT).AccessToken, 24*60*60, "/", "localhost", false, true)
+	c.SetCookie("accessToken", (*jwtT).AccessToken, 24*60*60, "/", ".abhishekraj.xyz", true, true)
 
 	c.JSON(200, gin.H{
 		"user": response,

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"math/rand"
+	"net/http"
 	"strings"
 	"time"
 
@@ -80,10 +81,11 @@ func GoogleCallback(c *gin.Context) {
 				jwtT.AccessToken = accessToken
 				return nil
 			}()
-			c.SetCookie("refreshToken", (*jwtT).RefreshToken, 24*60*60*15, "/auth/refresh", "localhost", false, true)
-			c.SetCookie("accessToken", (*jwtT).AccessToken, 24*60*60, "/", "localhost", false, true)
+			c.SetSameSite(http.SameSiteNoneMode)
+			c.SetCookie("refreshToken", (*jwtT).RefreshToken, 24*60*60*15, "/auth/refresh", ".abhishekraj.xyz", true, true)
+			c.SetCookie("accessToken", (*jwtT).AccessToken, 24*60*60, "/", ".abhishekraj.xyz", true, true)
 
-			c.Redirect(302, "http://localhost:3000/explore")
+			c.Redirect(302, "https://vawd.abhishekraj.xyz/explore")
 			return
 		} else {
 			c.JSON(400, gin.H{
@@ -143,8 +145,9 @@ func GoogleCallback(c *gin.Context) {
 		jwtT.AccessToken = accessToken
 		return nil
 	}()
-	c.SetCookie("refreshToken", (*jwtT).RefreshToken, 24*60*60*15, "/auth/refresh", "localhost", false, true)
-	c.SetCookie("accessToken", (*jwtT).AccessToken, 24*60*60, "/", "localhost", false, true)
+	c.SetSameSite(http.SameSiteNoneMode)
+	c.SetCookie("refreshToken", (*jwtT).RefreshToken, 24*60*60*15, "/auth/refresh", ".abhishekraj.xyz", true, true)
+	c.SetCookie("accessToken", (*jwtT).AccessToken, 24*60*60, "/", ".abhishekraj.xyz", true, true)
 
-	c.Redirect(302, "http://localhost:3000/explore")
+	c.Redirect(302, "https://vawd.abhishekraj.xyz/explore")
 }
