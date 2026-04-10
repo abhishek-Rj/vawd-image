@@ -110,7 +110,7 @@ export default async function ExplorePage(props: {
       <ProfileModal isOpen={isProfileOpen} />
 
       {/* Header section (optional, to maintain brutalist aesthetic padding) */}
-      <div className="h-14 pl-14 sm:pl-8 pr-16 sm:pr-24 grid-border-b bg-bg/50 backdrop-blur sticky top-0 z-30 pointer-events-none flex items-center">
+      <div className="h-14 px-4 sm:pl-8 sm:pr-24 grid-border-b bg-bg/50 backdrop-blur sticky top-0 z-30 pointer-events-none flex items-center justify-center sm:justify-start">
         <a href="/explore" className="pointer-events-auto transition-opacity hover:opacity-70">
           <h1 className="text-lg sm:text-lg font-bold tracking-tight text-fg uppercase translate-y-px">
             EXPLORE<span className="text-accent">_MEDIA</span>
