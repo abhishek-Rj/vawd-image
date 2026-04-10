@@ -63,9 +63,6 @@ export default function ProfileMenu() {
             <p className="text-xs font-bold uppercase tracking-widest break-all group-hover:text-bg">
               {user?.username || "GUEST_USER"}
             </p>
-            <p className="text-[10px] text-fg-dim font-supply uppercase tracking-wider mt-0.5 group-hover:text-bg/70">
-              FREE TIER
-            </p>
           </Link>
 
           {/* Menu Items */}

@@ -14,6 +14,15 @@ interface ImageType {
   progress: string;
 }
 
+function shuffleArray(array: any[]) {
+  let currentIndex = array.length;
+  while (currentIndex != 0) {
+    let randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+  }
+}
+
 async function getImages(): Promise<ImageType[]> {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get("accessToken")?.value;
@@ -33,8 +42,10 @@ async function getImages(): Promise<ImageType[]> {
     );
     if (!res.ok) return [];
     const data = await res.json();
-    console.log(data.images);
-    return data.images || [];
+    let imgArray = data.images || [];
+    // Randomize the default feed
+    shuffleArray(imgArray);
+    return imgArray;
   } catch (error) {
     console.error(error);
     return [];
@@ -100,9 +111,11 @@ export default async function ExplorePage(props: {
 
       {/* Header section (optional, to maintain brutalist aesthetic padding) */}
       <div className="h-14 pl-14 sm:pl-8 pr-16 sm:pr-24 grid-border-b bg-bg/50 backdrop-blur sticky top-0 z-30 pointer-events-none flex items-center">
-        <h1 className="text-lg sm:text-lg font-bold tracking-tight text-fg uppercase translate-y-px">
-          EXPLORE<span className="text-accent">_MEDIA</span>
-        </h1>
+        <a href="/explore" className="pointer-events-auto transition-opacity hover:opacity-70">
+          <h1 className="text-lg sm:text-lg font-bold tracking-tight text-fg uppercase translate-y-px">
+            EXPLORE<span className="text-accent">_MEDIA</span>
+          </h1>
+        </a>
       </div>
 
       {/* Masonry Grid */}
