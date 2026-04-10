@@ -98,18 +98,15 @@ export default async function ExplorePage(props: {
       <ProfileModal isOpen={isProfileOpen} />
 
       {/* Header section (optional, to maintain brutalist aesthetic padding) */}
-      <div className="px-8 py-10 grid-border-b bg-bg/50 backdrop-blur sticky top-0 z-30 pointer-events-none">
-        <h1 className="text-2xl font-bold tracking-tight text-fg uppercase">
+      <div className="h-14 pl-14 sm:pl-8 pr-16 sm:pr-24 grid-border-b bg-bg/50 backdrop-blur sticky top-0 z-30 pointer-events-none flex items-center">
+        <h1 className="text-lg sm:text-lg font-bold tracking-tight text-fg uppercase translate-y-px">
           EXPLORE<span className="text-accent">_MEDIA</span>
         </h1>
-        <p className="mt-2 text-xs text-fg-dim font-supply uppercase tracking-[0.15em]">
-          DISCOVER VISUAL CONTENT ACROSS THE NETWORK
-        </p>
       </div>
 
       {/* Masonry Grid */}
-      <div className="p-8">
-        <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+      <div className="p-4 sm:p-8">
+        <div className="columns-2 sm:columns-3 lg:columns-4 gap-4 sm:gap-6 space-y-4 sm:space-y-6">
           {images.length > 0
             ? images.map((img: ImageType, i: number) => (
                 <div
@@ -126,11 +123,11 @@ export default async function ExplorePage(props: {
                     />
                   </div>
                   {/* Minimal box decorations */}
-                  <div className="absolute top-4 left-4 flex gap-1.5">
-                    <div className="w-2 h-2 bg-accent opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300" />
+                  <div className="absolute top-2 left-2 sm:top-4 sm:left-4 flex gap-1.5">
+                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-accent opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300" />
                   </div>
                   {/* Pseudo image ID */}
-                  <div className="absolute bottom-4 right-4 text-[10px] font-supply text-border-light uppercase group-hover:text-fg-muted transition-colors duration-300 tracking-widest bg-bg/80 px-2 py-1">
+                  <div className="absolute bottom-2 right-2 sm:bottom-4 sm:right-4 text-[8px] sm:text-[10px] font-supply text-border-light uppercase group-hover:text-fg-muted transition-colors duration-300 tracking-widest bg-bg/80 px-1.5 py-0.5">
                     [{img.name}]
                   </div>
                   <div className="absolute inset-0 bg-fg opacity-0 group-hover:opacity-[0.02] transition-opacity duration-300 pointer-events-none" />
@@ -142,10 +139,10 @@ export default async function ExplorePage(props: {
                   className="break-inside-avoid bg-surface grid-border group relative overflow-hidden transition-all hover:border-fg w-full opacity-50"
                   style={{ height: `${height}px` }}
                 >
-                  <div className="absolute top-4 left-4 flex gap-1.5">
-                    <div className="w-2 h-2 bg-accent opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300" />
+                  <div className="absolute top-2 left-2 sm:top-4 sm:left-4 flex gap-1.5">
+                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-accent opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300" />
                   </div>
-                  <div className="absolute bottom-4 right-4 text-[10px] font-supply text-border-light uppercase group-hover:text-fg-muted transition-colors duration-300 tracking-widest">
+                  <div className="absolute bottom-2 right-2 sm:bottom-4 sm:right-4 text-[8px] sm:text-[10px] font-supply text-border-light uppercase group-hover:text-fg-muted transition-colors duration-300 tracking-widest">
                     [EMPTY_{String(i).padStart(4, "0")}]
                   </div>
                 </div>
