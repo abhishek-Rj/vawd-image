@@ -15,9 +15,12 @@ const monoSpec = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Vawd_Image — AI-Powered Visual Search",
+  title: "vawd_image — ai-powered visual search",
   description:
-    "Search images by visual content using CLIP embeddings and Pinecone vector search. Powered by a RAG pipeline for intelligent image retrieval.",
+    "search images by visual content using clip embeddings and pinecone vector search. powered by a rag pipeline for intelligent image retrieval.",
+  icons: {
+    icon: "/vawd.png",
+  },
 };
 
 export default async function RootLayout({

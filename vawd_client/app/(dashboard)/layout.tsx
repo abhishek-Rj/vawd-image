@@ -3,7 +3,7 @@ import Sidebar from "@/app/components/dashboard/Sidebar";
 import ProfileMenu from "@/app/components/dashboard/ProfileMenu";
 
 export const metadata: Metadata = {
-  title: "EXPLORE — VAWD_IMAGE",
+  title: "explore — vawd_image",
 };
 
 export default function DashboardLayout({
