@@ -11,7 +11,7 @@ func InitGoogleConfig() {
 	GoogleConfig = &oauth2.Config{
 		ClientID:     App.GoogleClientID,
 		ClientSecret: App.GoogleClientSecret,
-		RedirectURL:  "http://localhost:4000/auth/google/callback",
+		RedirectURL:  "https://vawd-auth.abhishekraj.xyz/auth/google/callback",
 		Scopes:       []string{"openid", "profile", "email"},
 		Endpoint:     google.Endpoint,
 	}
