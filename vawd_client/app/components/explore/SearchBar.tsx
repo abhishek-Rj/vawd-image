@@ -48,7 +48,7 @@ export default function SearchBar({ initialQuery = "" }: { initialQuery?: string
 
   return (
     <div className="fixed bottom-4 sm:bottom-12 left-1/2 -translate-x-1/2 w-full max-w-2xl px-4 sm:px-6 z-40 pointer-events-none">
-      <div className="pointer-events-auto bg-bg/90 backdrop-blur grid-border p-2 shadow-2xl flex items-end flex-row gap-2 transition-colors w-full relative">
+      <div className="pointer-events-auto bg-bg/90 backdrop-blur grid-border p-2 shadow-2xl flex items-end flex-row gap-2 transition-colors w-full relative group focus-within:border-accent focus-within:outline focus-within:outline-1 focus-within:outline-accent">
         <button
           type="button"
           onClick={() => router.push("?upload=true")}
@@ -68,7 +68,8 @@ export default function SearchBar({ initialQuery = "" }: { initialQuery?: string
             disabled={isPending}
             placeholder="DESCRIBE AN IMAGE..."
             rows={1}
-            className="w-full bg-transparent border-none outline-none text-[10px] sm:text-xs text-fg font-supply uppercase placeholder:text-fg-dim tracking-wide resize-none py-3 disabled:opacity-50"
+            className="w-full bg-transparent border-none outline-none no-focus-outline text-[10px] sm:text-xs text-fg font-supply uppercase placeholder:text-fg-dim tracking-wide resize-none py-3 disabled:opacity-50"
+            style={{ outline: "none" }}
           />
         </form>
         <button

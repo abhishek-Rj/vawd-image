@@ -2,6 +2,7 @@ import SearchBar from "@/app/components/explore/SearchBar";
 import UploadModal from "@/app/components/dashboard/UploadModal";
 import MyMediaModal from "@/app/components/dashboard/MyMediaModal";
 import ProfileModal from "@/app/components/dashboard/ProfileModal";
+import MasonryGrid from "@/app/components/explore/MasonryGrid";
 import { cookies } from "next/headers";
 import Image from "next/image";
 
@@ -106,48 +107,7 @@ export default async function ExplorePage(props: {
 
       {/* Masonry Grid */}
       <div className="p-4 sm:p-8">
-        <div className="columns-2 sm:columns-3 lg:columns-4 gap-4 sm:gap-6 space-y-4 sm:space-y-6">
-          {images.length > 0
-            ? images.map((img: ImageType, i: number) => (
-                <div
-                  key={img.id || i}
-                  className="break-inside-avoid bg-surface grid-border group relative overflow-hidden transition-all hover:border-fg w-full"
-                >
-                  <div className="relative w-full">
-                    <Image
-                      src={img.url}
-                      alt="Uploaded media"
-                      width={500}
-                      height={500}
-                      className="w-full h-auto object-cover brightness-110 contrast-125 hover:brightness-100 hover:contrast-100 transition-all duration-300"
-                    />
-                  </div>
-                  {/* Minimal box decorations */}
-                  <div className="absolute top-2 left-2 sm:top-4 sm:left-4 flex gap-1.5">
-                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-accent opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300" />
-                  </div>
-                  {/* Pseudo image ID */}
-                  <div className="absolute bottom-2 right-2 sm:bottom-4 sm:right-4 text-[8px] sm:text-[10px] font-supply text-border-light uppercase group-hover:text-fg-muted transition-colors duration-300 tracking-widest bg-bg/80 px-1.5 py-0.5">
-                    [{img.name}]
-                  </div>
-                  <div className="absolute inset-0 bg-fg opacity-0 group-hover:opacity-[0.02] transition-opacity duration-300 pointer-events-none" />
-                </div>
-              ))
-            : heights.map((height, i) => (
-                <div
-                  key={i}
-                  className="break-inside-avoid bg-surface grid-border group relative overflow-hidden transition-all hover:border-fg w-full opacity-50"
-                  style={{ height: `${height}px` }}
-                >
-                  <div className="absolute top-2 left-2 sm:top-4 sm:left-4 flex gap-1.5">
-                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-accent opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300" />
-                  </div>
-                  <div className="absolute bottom-2 right-2 sm:bottom-4 sm:right-4 text-[8px] sm:text-[10px] font-supply text-border-light uppercase group-hover:text-fg-muted transition-colors duration-300 tracking-widest">
-                    [EMPTY_{String(i).padStart(4, "0")}]
-                  </div>
-                </div>
-              ))}
-        </div>
+        <MasonryGrid images={images as any} heights={heights} />
       </div>
 
       <SearchBar initialQuery={q} />

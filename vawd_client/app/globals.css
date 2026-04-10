@@ -75,6 +75,10 @@ body {
   outline-offset: 0px;
 }
 
+.no-focus-outline:focus-visible {
+  outline: none !important;
+}
+
 /* ── Scrollbar ── */
 ::-webkit-scrollbar {
   width: 6px;
