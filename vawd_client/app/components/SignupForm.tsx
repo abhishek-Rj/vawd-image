@@ -225,7 +225,6 @@ export default function SignupForm() {
 
       {/* OAuth */}
       <form
-        method="POST"
         action={`${process.env.NEXT_PUBLIC_AUTH_SERVER_URL}/auth/google`}
         className="w-full"
       >
