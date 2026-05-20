@@ -1,3 +1,4 @@
+from app.lib.config import settings
 import uuid
 from kafka import KafkaConsumer
 import json
@@ -50,7 +51,7 @@ for msg in consumer:
         }])
 
         response = requests.post(
-            "http://localhost:4000/posts/update_image_status",
+            f"{settings.AUTH_SERVICE}/posts/update_image_status",
             json={
                 "image_id": image_id,
                 "status": "success"
